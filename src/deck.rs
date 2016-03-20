@@ -1,30 +1,52 @@
-use std::vec;
-
 use cards::Card;
+use cards::Suit;
+use cards::Value;
 
 pub struct Deck {
     // A deck contains zero or more cards
     cards: Vec<Card>,
     // Dealt cards are cards which have been dealt in calls but are still members of the deck
     // they remain dealt until the deck is reshuffled or reset.
-    dealtCards: Vec<Card>
+    dealt_cards: Vec<Card>
 }
 
 impl Deck {
     // insert cards
-//    pub fn new() -> Deck {
-//        Deck {
-//
-//        }
-//    }
+    pub fn new() -> Deck {
+        let mut deck = Deck {
+            cards: Vec::with_capacity(52),
+            dealt_cards: Vec::with_capacity(52)
+        };
+        deck.populate();
+        deck
+    }
 
-    // remove cards
+    fn populate(&mut self) {
+        for suit in Suit::iterator() {
+            for value in Value::iterator() {
+                self.cards.push(Card::new(*suit, *value));
+            }
+        }
+    }
+
+    pub fn deal_one(&mut self) {
+        if !self.cards.is_empty() {
+            let card = self.cards.pop().unwrap();
+            self.dealt_cards.push(card);
+        }
+    }
+
+    pub fn deal_many(&mut self, numcards : i8) {
+
+    }
 
     // shuffle
+    pub fn shuffle() {
+
+    }
 
     // reset
+    pub fn reset() {
 
-    // deal
-
-    // dealt / undealt
+    }
 }

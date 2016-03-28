@@ -77,6 +77,7 @@ impl Value {
     }
 }
 
+#[derive(Copy,Clone,PartialEq)]
 pub struct Card {
     suit: Suit,
     value: Value

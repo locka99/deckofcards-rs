@@ -66,25 +66,33 @@ impl Deck {
 
     // shuffle
     pub fn shuffle(&mut self) {
-        let num_cards = self.cards.len();
-        let mut shuffler : Vec<(Card, u32)> = Vec::with_capacity(num_cards);
+        if self.cards.is_empty() {
+            return;
+        }
 
-        for card in self.cards {
+        let mut shuffler : Vec<(&Card, u32)> = Vec::with_capacity(self.cards.len());
+        for card in self.cards.iter() {
             // make a tuple consisting of each card in the input and a random number
-            let card_pos = (card, rand::thread_rng().gen::<u32>())
-            
-            // First assign numbers to each card in the undealt list of cards
-            deck_order.push(card_pos);
+            let card_pos = (card, rand::thread_rng().gen::<u32>());
+            shuffler.push(card_pos);
         }
 
         // Sort the vector
-        shuffler.sort_by(|a, b| a.cmp(b));
+        shuffler.sort_by_key(|k| k.1);
 
         // Clear the cards
+        self.cards.clear();
+
+        // Put the cards into the new randomized order
+        for card_pos in shuffler {
+            let (card, _) = card_pos;
+            self.cards.push(*card)
+        }
     }
 
     // reset
     pub fn reset(&mut self) {
-
+        self.cards.extend(self.dealt_cards.iter());
+        self.dealt_cards.clear();
     }
 }

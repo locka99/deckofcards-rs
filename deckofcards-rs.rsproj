@@ -4,7 +4,7 @@
     <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">default</Platform>
     <ProjectGuid>d6265e12-1b91-4e1a-9a81-3dda29d28361</ProjectGuid>
-    <OutputType>library</OutputType>
+    <OutputType>exe</OutputType>
     <CrateName>deckofcards_rs</CrateName>
     <Name>deckofcards-rs</Name>
     <RootNamespace>deckofcards-rs</RootNamespace>

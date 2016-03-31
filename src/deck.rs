@@ -1,5 +1,9 @@
+extern crate rand;
+
+use rand::Rng;
+
 use std::vec::Vec;
-use std::option::Option;
+use std::result::Result;
 
 use cards::Card;
 use cards::Suit;
@@ -32,37 +36,55 @@ impl Deck {
         }
     }
 
-    pub fn deal_one(&mut self) -> Option<Card> {
-        let result : Option<Card>;
+    pub fn deal_one(&mut self) -> Result<Card, &'static str> {
+        let result: Result<Card, &'static str>;
         if self.cards.is_empty() {
-            result = None;
+            result = Err("No cards left");
         }
         else {
             let card = self.cards.pop().unwrap();
             self.dealt_cards.push(card);
-            result = Some(card);
+            result = Ok(card)
         }
         result
     }
 
     pub fn deal_many(&mut self, numcards : i32) -> Vec<Card> {
         let mut result : Vec<Card> = Vec::with_capacity(numcards as usize);
-        for i in 0..numcards {
-            let card : Option<Card> = self.deal_one();
-            if card.is_some() {
+        for _ in 0..numcards {
+            let card : Result<Card, &'static str> = self.deal_one();
+            if card.is_ok() {
                 result.push(card.unwrap());
+            }
+            else {
+                // No cards so no point continuing
+                break;
             }
         }
         result
     }
 
     // shuffle
-    pub fn shuffle() {
+    pub fn shuffle(&mut self) {
+        let num_cards = self.cards.len();
+        let mut shuffler : Vec<(Card, u32)> = Vec::with_capacity(num_cards);
 
+        for card in self.cards {
+            // make a tuple consisting of each card in the input and a random number
+            let card_pos = (card, rand::thread_rng().gen::<u32>())
+            
+            // First assign numbers to each card in the undealt list of cards
+            deck_order.push(card_pos);
+        }
+
+        // Sort the vector
+        shuffler.sort_by(|a, b| a.cmp(b));
+
+        // Clear the cards
     }
 
     // reset
-    pub fn reset() {
+    pub fn reset(&mut self) {
 
     }
 }

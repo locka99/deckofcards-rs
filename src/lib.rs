@@ -1,3 +1,5 @@
+extern crate rand;
+
 pub mod cards;
 pub mod deck;
 
@@ -8,7 +10,16 @@ mod test {
     use ::cards::Card;
 
     #[test]
-    fn it_works() {
+    fn card_equality() {
+        let card1 = Card::new(Suit::Hearts, Value::Ace);
+        let card2 = Card::new(Suit::Hearts, Value::Ace);
+        assert_eq!(card1, card1);
+        assert_eq!(card1, card2);
+        assert_eq!(card2, card1);
+        let card3 = Card::new(Suit::Spades, Value::Ace);
+        assert!(card1 != card3);
+        let card4 = Card::new(Suit::Hearts, Value::Two);
+        assert!(card1 != card4);
     }
 
     #[test]
@@ -35,4 +46,9 @@ mod test {
         assert_eq!("Clubs", Suit::Clubs.to_str());
         assert_eq!("Spades", Suit::Spades.to_str());
     }
+	
+	#[test]
+	fn shuffle_deck() {
+		
+	}
 }

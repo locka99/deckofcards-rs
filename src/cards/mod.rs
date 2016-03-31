@@ -4,7 +4,7 @@ use self::Suit::*;
 use self::Value::*;
 
 // Standard card suits
-#[derive(Copy,Clone,PartialEq)]
+#[derive(Copy, Clone, PartialEq, Debug)]
 pub enum Suit {
     Spades,
     Hearts,
@@ -32,7 +32,7 @@ impl Suit {
 }
 
 // Standard card values
-#[derive(Copy,Clone,PartialEq)]
+#[derive(Copy, Clone, PartialEq, Debug)]
 pub enum Value {
     Two,
     Three,
@@ -77,7 +77,7 @@ impl Value {
     }
 }
 
-#[derive(Copy,Clone,PartialEq)]
+#[derive(Copy, Clone, PartialEq, Debug)]
 pub struct Card {
     suit: Suit,
     value: Value

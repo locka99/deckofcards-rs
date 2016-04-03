@@ -7,23 +7,12 @@ pub mod deck;
 
 #[cfg(test)]
 mod test {
+    use std::collections::HashSet;
+
     use value::Value;
     use suit::Suit;
     use card::Card;
     use deck::Deck;
-
-    #[test]
-    fn card_equality() {
-        let card1 = Card::new(Suit::Hearts, Value::Ace);
-        let card2 = Card::new(Suit::Hearts, Value::Ace);
-        assert_eq!(card1, card1);
-        assert_eq!(card1, card2);
-        assert_eq!(card2, card1);
-        let card3 = Card::new(Suit::Spades, Value::Ace);
-        assert!(card1 != card3);
-        let card4 = Card::new(Suit::Hearts, Value::Two);
-        assert!(card1 != card4);
-    }
 
     #[test]
     fn value_to_str() {
@@ -51,7 +40,26 @@ mod test {
     }
 
     #[test]
-    fn deck_size() {
+    fn card_equality() {
+        let card1 = Card::new(Suit::Hearts, Value::Ace);
+        let card2 = Card::new(Suit::Hearts, Value::Ace);
+        assert_eq!(card1, card1);
+        assert_eq!(card1, card2);
+        assert_eq!(card2, card1);
+        let card3 = Card::new(Suit::Spades, Value::Ace);
+        assert!(card1 != card3);
+        let card4 = Card::new(Suit::Hearts, Value::Two);
+        assert!(card1 != card4);
+    }
+
+    #[test]
+    fn card_all_cards() {
+        let cards = Card::all_cards();
+        assert_eq!(cards.len(), 52);
+    }
+
+    #[test]
+    fn deck_count() {
         let mut d = Deck::new();
         assert_eq!(d.dealt_count(), 0);
         assert_eq!(d.undealt_count(), 52);
@@ -74,9 +82,23 @@ mod test {
     }
 
     #[test]
-    fn dealt_cards() {
+    fn deck_unique() {
+        let mut set : HashSet<u8> = HashSet::new();
         let mut d = Deck::new();
+        loop {
+            let c = d.deal_one();
+            if c.is_err() {
+                break;
+            }
+            let card = c.unwrap();
+            set.insert(card.ordinal());
+        }
+        assert_eq!(set.len(), d.count());
+    }
 
+    #[test]
+    fn deck_dealt_cards() {
+        let mut d = Deck::new();
         let mut dealt = 0;
         loop {
             let c = d.deal_one();
@@ -89,8 +111,66 @@ mod test {
         assert_eq!(dealt, 52);
     }
 
-	#[test]
-	fn shuffle_deck() {
-
+    #[test]
+	fn deck_reset() {
+        let c1 = Card::new(Suit::Hearts, Value::Ace);
+        let c2 = Card::new(Suit::Clubs, Value::Two);
+        let c3 = Card::new(Suit::Diamonds, Value::Three);
+        let c4 = Card::new(Suit::Spades, Value::Four);
+        let c5 = Card::new(Suit::Hearts, Value::Five);
+        let c6 = Card::new(Suit::Clubs, Value::Six);
+        let cards : [Card; 6] = [ c1, c2, c3, c4, c5, c6 ];
+        let mut d = Deck::new_from(&cards);
+        assert_eq!(d.count(), 6);
+        assert_eq!(d.deal_one().unwrap(), c6);
+        assert_eq!(d.deal_one().unwrap(), c5);
+        assert_eq!(d.deal_one().unwrap(), c4);
+        assert_eq!(d.deal_one().unwrap(), c3);
+        assert_eq!(d.deal_one().unwrap(), c2);
+        assert_eq!(d.deal_one().unwrap(), c1);
+        d.reset();
+        // Partially deal
+        assert_eq!(d.deal_one().unwrap(), c6);
+        assert_eq!(d.deal_one().unwrap(), c5);
+        assert_eq!(d.deal_one().unwrap(), c4);
+        d.reset();
+        assert_eq!(d.deal_one().unwrap(), c6);
+        assert_eq!(d.deal_one().unwrap(), c5);
+        assert_eq!(d.deal_one().unwrap(), c4);
+        assert_eq!(d.deal_one().unwrap(), c3);
+        assert_eq!(d.deal_one().unwrap(), c2);
+        assert_eq!(d.deal_one().unwrap(), c1);
 	}
+
+    #[test]
+    fn deck_shuffle_same_cards() {
+        let c1 = Card::new(Suit::Hearts, Value::Ace);
+        let c2 = Card::new(Suit::Clubs, Value::Two);
+        let c3 = Card::new(Suit::Diamonds, Value::Three);
+        let c4 = Card::new(Suit::Spades, Value::Four);
+        let c5 = Card::new(Suit::Hearts, Value::Five);
+        let c6 = Card::new(Suit::Clubs, Value::Six);
+        let cards : [Card; 6] = [ c1, c2, c3, c4, c5, c6 ];
+        let mut d = Deck::new_from(&cards);
+        d.shuffle();
+        let mut set : HashSet<Card> = HashSet::new();
+        loop {
+            let c = d.deal_one();
+            if c.is_err() {
+                break;
+            }
+            let card = c.unwrap();
+            set.insert(card);
+        }
+        assert!(set.contains(&c1));
+        assert!(set.contains(&c2));
+        assert!(set.contains(&c3));
+        assert!(set.contains(&c4));
+        assert!(set.contains(&c5));
+        assert!(set.contains(&c6));
+    }
+
+    #[test]
+    fn deck_shuffle_new_order() {
+    }
 }

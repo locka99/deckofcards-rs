@@ -3,7 +3,7 @@ use std::slice::Iter;
 use value::Value;
 use suit::Suit;
 
-#[derive(Copy, Clone, PartialEq, Debug)]
+#[derive(Copy, Clone, Hash, PartialEq, Eq, Debug)]
 pub struct Card {
     suit: Suit,
     value: Value
@@ -87,6 +87,10 @@ impl Card {
         name = name + " of ";
         name = name + self.suit.to_str();
         name
+    }
+
+    pub fn ordinal(&self) -> u8 {
+        self.suit.ordinal() * 13 + self.value.ordinal()
     }
 
     pub fn is_hearts(&self) -> bool {

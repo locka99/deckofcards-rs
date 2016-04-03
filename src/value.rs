@@ -3,7 +3,7 @@ use std::slice::Iter;
 use self::Value::*;
 
 // Standard card values
-#[derive(Copy, Clone, PartialEq, Debug)]
+#[derive(Copy, Clone, Hash, PartialEq, Eq, Debug)]
 pub enum Value {
     Two,
     Three,
@@ -23,8 +23,28 @@ pub enum Value {
 impl Value {
     pub fn iterator() -> Iter<'static, Value> {
         static VALUES: [Value; 13] =
-            [Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace];
+            [Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King];
         VALUES.into_iter()
+    }
+
+    pub fn ordinal(&self) -> u8 {
+        let result : u8;
+        match *self {
+            Ace => result = 0,
+            Two => result = 1,
+            Three => result = 2,
+            Four => result = 3,
+            Five => result = 4,
+            Six => result = 5,
+            Seven => result = 6,
+            Eight => result = 7,
+            Nine => result = 8,
+            Ten => result = 9,
+            Jack => result = 10,
+            Queen => result = 11,
+            King => result = 12
+        }
+        result
     }
 
     pub fn to_str(&self) -> &str {
@@ -42,7 +62,7 @@ impl Value {
             Ten => value_str = "Ten",
             Jack => value_str = "Jack",
             Queen => value_str = "Queen",
-            King => value_str = "King",
+            King => value_str = "King"
         }
         value_str
     }

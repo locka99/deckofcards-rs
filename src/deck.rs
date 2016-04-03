@@ -102,6 +102,9 @@ impl Deck {
 
     // reset
     pub fn reset(&mut self) {
+        // Cards are reversed to flip them over in effect
+        self.dealt_cards.reverse();
+        // Put cards back into undealt deck
         self.cards.extend(self.dealt_cards.iter());
         self.dealt_cards.clear();
     }

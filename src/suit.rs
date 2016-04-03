@@ -3,7 +3,7 @@ use std::slice::Iter;
 use self::Suit::*;
 
 // Standard card suits
-#[derive(Copy, Clone, PartialEq, Debug)]
+#[derive(Copy, Clone, Hash, PartialEq, Eq, Debug)]
 pub enum Suit {
     Spades,
     Hearts,
@@ -16,6 +16,17 @@ impl Suit {
         static SUITS: [Suit; 4] =
             [Spades, Hearts, Diamonds, Clubs];
         SUITS.into_iter()
+    }
+
+    pub fn ordinal(&self) -> u8 {
+        let result : u8;
+        match *self {
+            Spades => result = 0,
+            Hearts => result = 1,
+            Diamonds => result = 2,
+            Clubs => result = 3
+        }
+        result
     }
 
     pub fn to_str(&self) -> &str {

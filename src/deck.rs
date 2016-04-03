@@ -76,36 +76,34 @@ impl Deck {
         result
     }
 
-    // shuffle
+    pub fn undealt_as_slice(&self) -> &[Card] {
+        self.cards.as_slice()
+    }
+
+    pub fn dealt_as_slice(&self) -> &[Card] {
+        self.dealt_cards.as_slice()
+    }
+
     pub fn shuffle(&mut self) {
         if self.cards.is_empty() {
             return;
         }
 
-        let mut shuffler : Vec<(Card, u32)> = Vec::with_capacity(self.cards.len());
+        let mut cards = self.cards.as_mut_slice();
+        let mut rng =  rand::thread_rng();
 
-		for card in self.cards.drain(..) {
-			// make a tuple consisting of each card in the input and a random number
-			let card_pos = (card, rand::thread_rng().gen::<u32>());
-			shuffler.push(card_pos);
-		}
-
-        // Sort the vector
-        shuffler.sort_by_key(|k| k.1);
-
-        // Put the cards into the new randomized order
-        for card_pos in shuffler {
-            let (card, _) = card_pos;
-            self.cards.push(card)
+        // Knuth shuffle
+        let num_cards = cards.len();
+        for i in (1 .. num_cards - 1).rev() {
+            let j = rng.gen_range(0, i);
+            cards.swap(i, j);
         }
     }
 
     // reset
     pub fn reset(&mut self) {
-        // Cards are reversed to flip them over in effect
-        self.dealt_cards.reverse();
-        // Put cards back into undealt deck
-        self.cards.extend(self.dealt_cards.iter());
+        // Put cards back into undealt deck in reverse order
+        self.cards.extend(self.dealt_cards.iter().rev());
         self.dealt_cards.clear();
     }
 }

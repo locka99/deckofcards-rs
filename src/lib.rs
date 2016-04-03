@@ -8,6 +8,7 @@ pub mod deck;
 #[cfg(test)]
 mod test {
     use std::collections::HashSet;
+    use std::slice::Iter;
 
     use value::Value;
     use suit::Suit;
@@ -32,11 +33,38 @@ mod test {
     }
 
     #[test]
+    fn value_iter() {
+        let mut i : Iter<'static, Value>  = Value::iterator();
+        assert_eq!(*i.next().unwrap(), Value::Ace);
+        assert_eq!(*i.next().unwrap(), Value::Two);
+        assert_eq!(*i.next().unwrap(), Value::Three);
+        assert_eq!(*i.next().unwrap(), Value::Four);
+        assert_eq!(*i.next().unwrap(), Value::Five);
+        assert_eq!(*i.next().unwrap(), Value::Six);
+        assert_eq!(*i.next().unwrap(), Value::Seven);
+        assert_eq!(*i.next().unwrap(), Value::Eight);
+        assert_eq!(*i.next().unwrap(), Value::Nine);
+        assert_eq!(*i.next().unwrap(), Value::Ten);
+        assert_eq!(*i.next().unwrap(), Value::Jack);
+        assert_eq!(*i.next().unwrap(), Value::Queen);
+        assert_eq!(*i.next().unwrap(), Value::King);
+    }
+
+    #[test]
     fn suit_to_str() {
+        assert_eq!("Spades", Suit::Spades.to_str());
         assert_eq!("Hearts", Suit::Hearts.to_str());
         assert_eq!("Diamonds", Suit::Diamonds.to_str());
         assert_eq!("Clubs", Suit::Clubs.to_str());
-        assert_eq!("Spades", Suit::Spades.to_str());
+    }
+
+    #[test]
+    fn suit_iter() {
+        let mut i : Iter<'static, Suit>  = Suit::iterator();
+        assert_eq!(*i.next().unwrap(), Suit::Spades);
+        assert_eq!(*i.next().unwrap(), Suit::Hearts);
+        assert_eq!(*i.next().unwrap(), Suit::Diamonds);
+        assert_eq!(*i.next().unwrap(), Suit::Clubs);
     }
 
     #[test]
@@ -105,7 +133,6 @@ mod test {
             if c.is_err() {
                 break;
             }
-            println!("card = {}", c.unwrap().name());
             dealt += 1;
         }
         assert_eq!(dealt, 52);
@@ -172,5 +199,14 @@ mod test {
 
     #[test]
     fn deck_shuffle_new_order() {
+        let mut d = Deck::new();
+        d.shuffle();
+        loop {
+            let c = d.deal_one();
+            if c.is_err() {
+                break;
+            }
+//          println!("card = {}", c.unwrap().name());
+        }
     }
 }

@@ -2,6 +2,9 @@
 name = "deckofcards"
 version = "0.1.0"
 authors = ["Adam Lock <locka99@gmail.com>"]
+description = "An API to implement a deck of cards"
+license = "LGPL-2.1"
+homepage = "https://github.com/locka99/deckofcards-rs"
 
 [dependencies]
 rand = "0.3.14"

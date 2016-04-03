@@ -5,9 +5,7 @@ use rand::Rng;
 use std::vec::Vec;
 use std::result::Result;
 
-use cards::Card;
-use cards::Suit;
-use cards::Value;
+use card::Card;
 
 pub struct Deck {
     // A deck contains zero or more cards
@@ -20,20 +18,34 @@ pub struct Deck {
 impl Deck {
     // insert cards
     pub fn new() -> Deck {
+        Deck::new_from(Card::all_cards())
+    }
+
+    pub fn new_from(cards : &[Card]) -> Deck {
         let mut deck = Deck {
-            cards: Vec::with_capacity(52),
-            dealt_cards: Vec::with_capacity(52)
+            cards: Vec::with_capacity(cards.len()),
+            dealt_cards: Vec::with_capacity(cards.len())
         };
-        deck.populate();
+        deck.populate(cards);
         deck
     }
 
-    fn populate(&mut self) {
-        for suit in Suit::iterator() {
-            for value in Value::iterator() {
-                self.cards.push(Card::new(*suit, *value));
-            }
+    fn populate(&mut self, cards: &[Card]) {
+        for card in cards {
+            self.cards.push(*card);
         }
+    }
+
+    pub fn undealt_count(&self) -> usize {
+        self.cards.len()
+    }
+
+    pub fn dealt_count(&self) -> usize {
+        self.dealt_cards.len()
+    }
+
+    pub fn count(&self) -> usize {
+        self.undealt_count() + self.dealt_count()
     }
 
     pub fn deal_one(&mut self) -> Result<Card, &'static str> {
@@ -70,23 +82,21 @@ impl Deck {
             return;
         }
 
-        let mut shuffler : Vec<(&Card, u32)> = Vec::with_capacity(self.cards.len());
-        for card in self.cards.iter() {
-            // make a tuple consisting of each card in the input and a random number
-            let card_pos = (card, rand::thread_rng().gen::<u32>());
-            shuffler.push(card_pos);
-        }
+        let mut shuffler : Vec<(Card, u32)> = Vec::with_capacity(self.cards.len());
+
+		for card in self.cards.drain(..) {
+			// make a tuple consisting of each card in the input and a random number
+			let card_pos = (card, rand::thread_rng().gen::<u32>());
+			shuffler.push(card_pos);
+		}
 
         // Sort the vector
         shuffler.sort_by_key(|k| k.1);
 
-        // Clear the cards
-        self.cards.clear();
-
         // Put the cards into the new randomized order
         for card_pos in shuffler {
             let (card, _) = card_pos;
-            self.cards.push(*card)
+            self.cards.push(card)
         }
     }
 

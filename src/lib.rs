@@ -1,13 +1,16 @@
 extern crate rand;
 
-pub mod cards;
+pub mod suit;
+pub mod value;
+pub mod card;
 pub mod deck;
 
 #[cfg(test)]
 mod test {
-    use ::cards::Value;
-    use ::cards::Suit;
-    use ::cards::Card;
+    use value::Value;
+    use suit::Suit;
+    use card::Card;
+    use deck::Deck;
 
     #[test]
     fn card_equality() {
@@ -46,9 +49,48 @@ mod test {
         assert_eq!("Clubs", Suit::Clubs.to_str());
         assert_eq!("Spades", Suit::Spades.to_str());
     }
-	
+
+    #[test]
+    fn deck_size() {
+        let mut d = Deck::new();
+        assert_eq!(d.dealt_count(), 0);
+        assert_eq!(d.undealt_count(), 52);
+        assert_eq!(d.count(), 52);
+
+        let _ = d.deal_one();
+        assert_eq!(d.dealt_count(), 1);
+        assert_eq!(d.undealt_count(), 51);
+        assert_eq!(d.count(), 52);
+
+        let _ = d.deal_many(10);
+        assert_eq!(d.dealt_count(), 11);
+        assert_eq!(d.undealt_count(), 41);
+        assert_eq!(d.count(), 52);
+
+        let _ = d.deal_many(100);
+        assert_eq!(d.dealt_count(), 52);
+        assert_eq!(d.undealt_count(), 0);
+        assert_eq!(d.count(), 52);
+    }
+
+    #[test]
+    fn dealt_cards() {
+        let mut d = Deck::new();
+
+        let mut dealt = 0;
+        loop {
+            let c = d.deal_one();
+            if c.is_err() {
+                break;
+            }
+            println!("card = {}", c.unwrap().name());
+            dealt += 1;
+        }
+        assert_eq!(dealt, 52);
+    }
+
 	#[test]
 	fn shuffle_deck() {
-		
+
 	}
 }

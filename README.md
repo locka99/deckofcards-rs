@@ -18,21 +18,26 @@ By default if you don't shuffle, your deck will be sorted.
 Typical usage:
 
 ```
-use deckofcards::Deck;
-use deckofcards::Card;
+extern crate deckofcards;
 
-let mut deck = Deck::new();
+use deckofcards::deck::Deck;
 
-// Shuffle the deck
-deck.shuffle();
+fn main() {
+    let mut deck = Deck::new();
 
-// Deal a card
-let next = deck.deal_one();
-if next.is_ok() {
-  let card = next.unwrap();
-  println!("You dealt a {}", card.name());
+    // Shuffle the deck
+    deck.shuffle();
+
+    // Deal a card
+    for _ in 0..10 {
+        let next = deck.deal_one();
+        if next.is_ok() {
+          let card = next.unwrap();
+          println!("You dealt a {}", card.name());
+        }
+    }
+
+    // Put dealt cards back onto the deck
+    deck.reset();
 }
-
-// Put dealt cards back onto the deck
-deck.reset();
 ```

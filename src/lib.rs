@@ -1,9 +1,14 @@
 extern crate rand;
 
-pub mod suit;
-pub mod value;
-pub mod card;
-pub mod deck;
+mod suit;
+mod value;
+mod card;
+mod deck;
+
+pub use suit::Suit;
+pub use value::Value;
+pub use card::Card;
+pub use deck::Deck;
 
 #[cfg(test)]
 mod test {

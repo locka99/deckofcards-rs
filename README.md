@@ -6,7 +6,7 @@ This is a simple library implemented in Rust that models a deck of cards.
 
 ```
 [dependencies]
-deckofcards = "0.1.0"
+deckofcards = "0.1.1"
 ```
 
 ## Usage
@@ -20,7 +20,7 @@ Typical usage:
 ```
 extern crate deckofcards;
 
-use deckofcards::deck::Deck;
+use deckofcards::Deck;
 
 fn main() {
     let mut deck = Deck::new();

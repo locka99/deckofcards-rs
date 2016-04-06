@@ -56,6 +56,19 @@ mod test {
     }
 
     #[test]
+    fn value_char() {
+        assert_eq!(Value::from_char('A').unwrap(), Value::Ace);
+        assert_eq!(Value::from_char('3').unwrap(), Value::Three);
+        assert_eq!(Value::from_char('K').unwrap(), Value::King);
+        assert!(Value::from_char(' ').is_err());
+        assert!(Value::from_char('H').is_err());
+        assert!(Value::from_char('x').is_err());
+        assert_eq!(Value::Ace.to_char(), 'A');
+        assert_eq!(Value::Three.to_char(), '3');
+        assert_eq!(Value::King.to_char(), 'K');
+    }
+
+    #[test]
     fn suit_to_str() {
         assert_eq!("Spades", Suit::Spades.to_str());
         assert_eq!("Hearts", Suit::Hearts.to_str());
@@ -73,6 +86,21 @@ mod test {
     }
 
     #[test]
+    fn suit_char() {
+        assert_eq!(Suit::from_char('H').unwrap(), Suit::Hearts);
+        assert_eq!(Suit::from_char('D').unwrap(), Suit::Diamonds);
+        assert_eq!(Suit::from_char('S').unwrap(), Suit::Spades);
+        assert_eq!(Suit::from_char('C').unwrap(), Suit::Clubs);
+        assert!(Suit::from_char(' ').is_err());
+        assert!(Suit::from_char('T').is_err());
+        assert!(Suit::from_char('x').is_err());
+        assert_eq!(Suit::Hearts.to_char(), 'H');
+        assert_eq!(Suit::Diamonds.to_char(), 'D');
+        assert_eq!(Suit::Spades.to_char(), 'S');
+        assert_eq!(Suit::Clubs.to_char(), 'C');
+    }
+
+    #[test]
     fn card_equality() {
         let card1 = Card::new(Suit::Hearts, Value::Ace);
         let card2 = Card::new(Suit::Hearts, Value::Ace);
@@ -83,6 +111,19 @@ mod test {
         assert!(card1 != card3);
         let card4 = Card::new(Suit::Hearts, Value::Two);
         assert!(card1 != card4);
+    }
+
+    #[test]
+    fn card_from_str() {
+        assert_eq!(Card::from_str("TC").unwrap(), Card::new(Suit::Clubs, Value::Ten));
+        assert_eq!(Card::from_str("CT").unwrap(), Card::new(Suit::Clubs, Value::Ten));
+        assert_eq!(Card::from_str("AD").unwrap(), Card::new(Suit::Diamonds, Value::Ace));
+        assert!(Card::from_str("ADC").is_err());
+        assert!(Card::from_str("A").is_err());
+        assert!(Card::from_str("C").is_err());
+        assert!(Card::from_str("AA").is_err());
+        assert!(Card::from_str("DD").is_err());
+        assert!(Card::from_str("").is_err());
     }
 
     #[test]
@@ -116,7 +157,7 @@ mod test {
 
     #[test]
     fn deck_unique() {
-        let mut set : HashSet<u8> = HashSet::new();
+        let mut set : HashSet<usize> = HashSet::new();
         let mut d = Deck::new();
         loop {
             let c = d.deal_one();

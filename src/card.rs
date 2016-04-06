@@ -17,6 +17,30 @@ impl Card {
         }
     }
 
+    pub fn from_str(s : &str) -> Result<Card, &'static str> {
+        if s.len() != 2 {
+            return Err("String is wrong length")
+        }
+
+        let s = s.to_string();
+        let mut i = s.chars();
+        let c1 = i.next().unwrap();
+        let c2 = i.next().unwrap();
+
+        if let Ok(suit) = Suit::from_char(c1) {
+            if let Ok(value) = Value::from_char(c2) {
+                return Ok(Card::new(suit, value));
+            }
+        }
+        if let Ok(value) = Value::from_char(c1) {
+            if let Ok(suit) = Suit::from_char(c2) {
+                return Ok(Card::new(suit, value));
+            }
+        }
+
+        Err("Invalid string")
+    }
+
     pub fn all_cards() -> &'static[Card] {
         static CARDS : [Card; 52] = [
             Card { suit: Suit::Spades, value: Value::Ace },
@@ -89,7 +113,7 @@ impl Card {
         name
     }
 
-    pub fn ordinal(&self) -> u8 {
+    pub fn ordinal(&self) -> usize {
         self.suit.ordinal() * 13 + self.value.ordinal()
     }
 

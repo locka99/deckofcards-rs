@@ -21,14 +21,13 @@ pub enum Value {
 }
 
 impl Value {
+
     pub fn iterator() -> Iter<'static, Value> {
-        static VALUES: [Value; 13] =
-            [Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King];
-        VALUES.into_iter()
+        Value::values().into_iter()
     }
 
-    pub fn ordinal(&self) -> u8 {
-        let result : u8;
+    pub fn ordinal(&self) -> usize {
+        let result : usize;
         match *self {
             Ace => result = 0,
             Two => result = 1,
@@ -45,6 +44,22 @@ impl Value {
             King => result = 12
         }
         result
+    }
+
+    pub fn from_char(ch: char) -> Result<Value, &'static str> {
+        let s = Value::chars().to_string();
+        for (i, c) in s.chars().enumerate() {
+            if c == ch {
+                return Ok(Value::values()[i]);
+            }
+        }
+        Err("Invalid value")
+    }
+
+    pub fn to_char(&self) -> char {
+        let ord = self.ordinal();
+        let b : &[u8] = Value::chars().as_bytes();
+        b[ord] as char
     }
 
     pub fn to_str(&self) -> &str {
@@ -65,5 +80,15 @@ impl Value {
             King => value_str = "King"
         }
         value_str
+    }
+
+    fn values() -> &'static[Value] {
+        static VALUES: [Value; 13] =
+            [Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King];
+        &VALUES[0..]
+    }
+
+    fn chars() -> &'static str {
+        "A23456789TJQK"
     }
 }

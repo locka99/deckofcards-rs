@@ -3,13 +3,17 @@ use std::slice::Iter;
 use value::Value;
 use suit::Suit;
 
+/// A playing card has a suit and a value
 #[derive(Copy, Clone, Hash, PartialEq, Eq, Debug)]
 pub struct Card {
-    suit: Suit,
-    value: Value
+    /// The card's suit, e.g. Hearts
+    pub suit: Suit,
+    /// The card's value, e.g. Jack
+    pub value: Value
 }
 
 impl Card {
+    /// Creates a card with the given suit and value
     pub fn new(suit: Suit, value: Value) -> Card {
         Card {
             suit: suit,
@@ -17,6 +21,7 @@ impl Card {
         }
     }
 
+    /// Creates a card from a string such, e.g. "AS" returns Ace of Spades
     pub fn from_str(s : &str) -> Result<Card, &'static str> {
         if s.len() != 2 {
             return Err("String is wrong length")
@@ -27,13 +32,15 @@ impl Card {
         let c1 = i.next().unwrap();
         let c2 = i.next().unwrap();
 
-        if let Ok(suit) = Suit::from_char(c1) {
-            if let Ok(value) = Value::from_char(c2) {
+        // Test value / suit
+        if let Ok(value) = Value::from_char(c1) {
+            if let Ok(suit) = Suit::from_char(c2) {
                 return Ok(Card::new(suit, value));
             }
         }
-        if let Ok(value) = Value::from_char(c1) {
-            if let Ok(suit) = Suit::from_char(c2) {
+        // Try suit / value
+        if let Ok(suit) = Suit::from_char(c1) {
+            if let Ok(value) = Value::from_char(c2) {
                 return Ok(Card::new(suit, value));
             }
         }
@@ -41,6 +48,48 @@ impl Card {
         Err("Invalid string")
     }
 
+    /// Turns the card into a short string consisting of value, suit, e.g. "AS"
+    pub fn to_str(&self) -> String {
+        let mut result = String::with_capacity(2);
+        result.push(self.value.to_char());
+        result.push(self.suit.to_char());
+        result
+    }
+
+    /// Returns an English formatted name of the card, e.g. "Ace of Spades"
+    pub fn name(&self) -> String {
+        let mut name : String = self.value.to_str().to_string();
+        name = name + " of ";
+        name = name + self.suit.to_str();
+        name
+    }
+
+    /// Returns an ordinal for the card which is a unique number which can be used for indexing
+    pub fn ordinal(&self) -> usize {
+        self.suit.ordinal() * 13 + self.value.ordinal()
+    }
+
+    /// Tests if the card is Hearts
+    pub fn is_hearts(&self) -> bool {
+        self.suit == Suit::Hearts
+    }
+
+    /// Tests if the card is Clubs
+    pub fn is_clubs(&self) -> bool {
+        self.suit == Suit::Clubs
+    }
+
+    /// Tests if the card is Spades
+    pub fn is_spades(&self) -> bool {
+        self.suit == Suit::Spades
+    }
+
+    /// Tests if the card is Diamonds
+    pub fn is_diamonds(&self) -> bool {
+        self.suit == Suit::Diamonds
+    }
+
+    /// Returns an array slice containing all the cards in a standard 52-card deck
     pub fn all_cards() -> &'static[Card] {
         static CARDS : [Card; 52] = [
             Card { suit: Suit::Spades, value: Value::Ace },
@@ -104,32 +153,5 @@ impl Card {
 
     pub fn iterator() -> Iter<'static, Card> {
         Card::all_cards().into_iter()
-    }
-
-    pub fn name(&self) -> String {
-        let mut name : String = self.value.to_str().to_string();
-        name = name + " of ";
-        name = name + self.suit.to_str();
-        name
-    }
-
-    pub fn ordinal(&self) -> usize {
-        self.suit.ordinal() * 13 + self.value.ordinal()
-    }
-
-    pub fn is_hearts(&self) -> bool {
-        self.suit == Suit::Hearts
-    }
-
-    pub fn is_clubs(&self) -> bool {
-        self.suit == Suit::Clubs
-    }
-
-    pub fn is_spades(&self) -> bool {
-        self.suit == Suit::Spades
-    }
-
-    pub fn is_diamonds(&self) -> bool {
-        self.suit == Suit::Diamonds
     }
 }

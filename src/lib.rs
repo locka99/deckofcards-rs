@@ -127,6 +127,14 @@ mod test {
     }
 
     #[test]
+    fn card_to_str() {
+        assert_eq!(Card::new(Suit::Clubs, Value::Ten).to_str(), "TC");
+        assert_eq!(Card::new(Suit::Spades, Value::Queen).to_str(), "QS");
+        assert_eq!(Card::new(Suit::Diamonds, Value::Ace).to_str(), "AD");
+        assert_eq!(Card::new(Suit::Hearts, Value::Three).to_str(), "3H");
+    }
+
+    #[test]
     fn card_all_cards() {
         let cards = Card::all_cards();
         assert_eq!(cards.len(), 52);

@@ -1,6 +1,6 @@
 [package]
 name = "deckofcards"
-version = "0.1.1"
+version = "0.2.0"
 authors = ["Adam Lock <locka99@gmail.com>"]
 description = "An API to implement a deck of cards"
 license = "LGPL-2.1"

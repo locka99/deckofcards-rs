@@ -2,7 +2,7 @@ use std::slice::Iter;
 
 use self::Suit::*;
 
-// Standard card suits
+/// Standard card suits
 #[derive(Copy, Clone, Hash, PartialEq, Eq, Debug)]
 pub enum Suit {
     Spades,
@@ -12,10 +12,12 @@ pub enum Suit {
 }
 
 impl Suit {
+    /// Returns an iterator through the standard suits
     pub fn iterator() -> Iter<'static, Suit> {
         Suit::suits().into_iter()
     }
 
+    /// Returns an ordinal for the suit
     pub fn ordinal(&self) -> usize {
         let result : usize;
         match *self {
@@ -27,6 +29,7 @@ impl Suit {
         result
     }
 
+    /// Returns a Suit for the character, e.g. Hearts for 'H'
     pub fn from_char(ch: char) -> Result<Suit, &'static str> {
         let s = Suit::chars().to_string();
         for (i, c) in s.chars().enumerate() {
@@ -37,12 +40,14 @@ impl Suit {
         Err("Invalid suit")
     }
 
+    /// Returns a char that the represents the suit, e.g. 'H' for Hearts
     pub fn to_char(&self) -> char {
         let ord = self.ordinal();
         let b : &[u8] = Suit::chars().as_bytes();
         b[ord] as char
     }
 
+    /// Returns a string name of the suit
     pub fn to_str(&self) -> &str {
         let suit_str;
         match *self {
@@ -54,12 +59,14 @@ impl Suit {
         suit_str
     }
 
+    /// The standard list of suits
     fn suits() -> &'static[Suit] {
         static SUITS: [Suit; 4] =
             [Spades, Hearts, Diamonds, Clubs];
-        &SUITS[0..]
+        &SUITS[..]
     }
 
+    /// A string with chars for each suit
     fn chars() -> &'static str {
         "SHDC"
     }

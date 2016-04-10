@@ -21,6 +21,7 @@ mod test {
     use suit::Suit;
     use card::Card;
     use deck::Deck;
+    use hand::Hand;
 
     #[test]
     fn value_to_str() {
@@ -42,7 +43,6 @@ mod test {
     #[test]
     fn value_iter() {
         let mut i : Iter<'static, Value>  = Value::iterator();
-        assert_eq!(*i.next().unwrap(), Value::Ace);
         assert_eq!(*i.next().unwrap(), Value::Two);
         assert_eq!(*i.next().unwrap(), Value::Three);
         assert_eq!(*i.next().unwrap(), Value::Four);
@@ -55,6 +55,7 @@ mod test {
         assert_eq!(*i.next().unwrap(), Value::Jack);
         assert_eq!(*i.next().unwrap(), Value::Queen);
         assert_eq!(*i.next().unwrap(), Value::King);
+        assert_eq!(*i.next().unwrap(), Value::Ace);
     }
 
     #[test]
@@ -120,6 +121,7 @@ mod test {
         assert_eq!(Card::from_str("TC").unwrap(), Card::new(Suit::Clubs, Value::Ten));
         assert_eq!(Card::from_str("CT").unwrap(), Card::new(Suit::Clubs, Value::Ten));
         assert_eq!(Card::from_str("AD").unwrap(), Card::new(Suit::Diamonds, Value::Ace));
+        assert_eq!(Card::from_str("1S").unwrap(), Card::new(Suit::Spades, Value::Ace));
         assert!(Card::from_str("ADC").is_err());
         assert!(Card::from_str("A").is_err());
         assert!(Card::from_str("C").is_err());
@@ -154,12 +156,12 @@ mod test {
         assert_eq!(d.undealt_count(), 51);
         assert_eq!(d.count(), 52);
 
-        let _ = d.deal_many(10);
+        let _ = d.deal(10);
         assert_eq!(d.dealt_count(), 11);
         assert_eq!(d.undealt_count(), 41);
         assert_eq!(d.count(), 52);
 
-        let _ = d.deal_many(100);
+        let _ = d.deal(100);
         assert_eq!(d.dealt_count(), 52);
         assert_eq!(d.undealt_count(), 0);
         assert_eq!(d.count(), 52);
@@ -262,7 +264,29 @@ mod test {
             if c.is_err() {
                 break;
             }
-//          println!("card = {}", c.unwrap().name());
         }
+    }
+
+    // TODO value_sort
+    // TODO suit_sort
+    // TODO hand_sort_values_and_suits
+
+    #[test]
+    fn hand_sort() {
+        let mut h = Hand::new();
+        h.push(Card::new(Suit::Clubs, Value::Ten));
+        h.push(Card::new(Suit::Clubs, Value::Two));
+        h.push(Card::new(Suit::Hearts, Value::Ace));
+        h.sort_high_to_low();
+        let cards = h.as_slice();
+        let sc1 = cards[0];
+        let sc2 = cards[1];
+        let sc3 = cards[2];
+        println!("card 1 = {}", sc1.name());
+        println!("card 2 = {}", sc2.name());
+        println!("card 3 = {}", sc3.name());
+        assert_eq!(sc1, Card::new(Suit::Hearts, Value::Ace));
+        assert_eq!(sc2, Card::new(Suit::Clubs, Value::Ten));
+        assert_eq!(sc3, Card::new(Suit::Clubs, Value::Two));
     }
 }

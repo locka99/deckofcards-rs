@@ -1,14 +1,30 @@
+use std::cmp::Ordering;
 use std::slice::Iter;
 
 use self::Suit::*;
 
 /// Standard card suits
-#[derive(Copy, Clone, Hash, PartialEq, Eq, Debug)]
+#[derive(Copy, Clone, Hash, PartialEq, Eq, PartialOrd, Debug)]
 pub enum Suit {
     Spades,
     Hearts,
     Diamonds,
     Clubs
+}
+
+impl Ord for Suit {
+    fn cmp(&self, other: &Suit) -> Ordering
+    {
+        let o1 = self.ordinal();
+        let o2 = other.ordinal();
+        if o1 < o2 {
+            return Ordering::Less;
+        }
+        else if o1 > o2 {
+            return Ordering::Greater;
+        }
+        Ordering::Equal
+    }
 }
 
 impl Suit {

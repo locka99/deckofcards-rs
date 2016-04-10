@@ -1,11 +1,11 @@
+use std::cmp::Ordering;
 use std::slice::Iter;
 
 use self::Value::*;
 
 /// Standard card values
-#[derive(Copy, Clone, Hash, PartialEq, Eq, Debug)]
+#[derive(Copy, Clone, Hash, Eq, PartialEq, PartialOrd, Debug)]
 pub enum Value {
-    Ace,
     Two,
     Three,
     Four,
@@ -17,8 +17,25 @@ pub enum Value {
     Ten,
     Jack,
     Queen,
-    King
+    King,
+    Ace
 }
+
+impl Ord for Value {
+    fn cmp(&self, other: &Value) -> Ordering
+    {
+        let ord1 = self.ordinal();
+        let ord2 = other.ordinal();
+        if ord1 < ord2 {
+            return Ordering::Less;
+        }
+        else if ord1 > ord2 {
+            return Ordering::Greater;
+        }
+        Ordering::Equal
+    }
+}
+
 
 impl Value {
     /// Returns an iterator through the standard values
@@ -30,19 +47,19 @@ impl Value {
     pub fn ordinal(&self) -> usize {
         let result : usize;
         match *self {
-            Ace => result = 0,
-            Two => result = 1,
-            Three => result = 2,
-            Four => result = 3,
-            Five => result = 4,
-            Six => result = 5,
-            Seven => result = 6,
-            Eight => result = 7,
-            Nine => result = 8,
-            Ten => result = 9,
-            Jack => result = 10,
-            Queen => result = 11,
-            King => result = 12
+            Two => result = 0,
+            Three => result = 1,
+            Four => result = 2,
+            Five => result = 3,
+            Six => result = 4,
+            Seven => result = 5,
+            Eight => result = 6,
+            Nine => result = 7,
+            Ten => result = 8,
+            Jack => result = 9,
+            Queen => result = 10,
+            King => result = 11,
+            Ace => result = 12
         }
         result
     }
@@ -70,7 +87,6 @@ impl Value {
     pub fn to_str(&self) -> &str {
         let value_str;
         match *self {
-            Ace => value_str = "Ace",
             Two => value_str = "Two",
             Three => value_str = "Three",
             Four => value_str = "Four",
@@ -82,7 +98,8 @@ impl Value {
             Ten => value_str = "Ten",
             Jack => value_str = "Jack",
             Queen => value_str = "Queen",
-            King => value_str = "King"
+            King => value_str = "King",
+            Ace => value_str = "Ace"
         }
         value_str
     }
@@ -90,12 +107,12 @@ impl Value {
     /// Gets the standard list of chars
     fn values() -> &'static[Value] {
         static VALUES: [Value; 13] =
-            [Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King];
+            [Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace];
         &VALUES[..]
     }
 
     /// A string containing chars for each standard Value
     fn chars() -> &'static str {
-        "A23456789TJQK"
+        "23456789TJQKA"
     }
 }

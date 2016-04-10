@@ -6,6 +6,7 @@ use std::vec::Vec;
 use std::result::Result;
 
 use card::Card;
+use hand::Hand;
 
 /// This represents a deck of zero or more cards. Internally the deck consists of an undealt and a dealt pile of cards.
 /// The undealt pile starts off empty and receives cards as they are dealt from the undealt pile.
@@ -67,8 +68,8 @@ impl Deck {
         Ok(card)
     }
 
-    /// Deals more than one card from the undealt pile and returns them as an array.
-    pub fn deal_many(&mut self, numcards : i32) -> Vec<Card> {
+    /// Deals one or more card from the undealt pile and returns them as an array.
+    pub fn deal(&mut self, numcards : usize) -> Vec<Card> {
         let mut result : Vec<Card> = Vec::with_capacity(numcards as usize);
         for _ in 0..numcards {
             let card : Result<Card, &'static str> = self.deal_one();
@@ -81,6 +82,23 @@ impl Deck {
             }
         }
         result
+    }
+
+    /// Deals one or more card straight to the hand. Returns the number of cards dealt
+    pub fn deal_to_hand(&mut self, hand : &mut Hand, numcards : usize) -> usize {
+        let mut dealt : usize = 0;
+        for _ in 0..numcards {
+            let card : Result<Card, &'static str> = self.deal_one();
+            if card.is_ok() {
+                dealt += 1;
+                hand.push(card.unwrap());
+            }
+            else {
+                // No cards so no point continuing
+                break;
+            }
+        }
+        dealt
     }
 
     /// Returns the undealt cards as a slice

@@ -1,15 +1,28 @@
+use std::cmp::Ordering;
 use std::slice::Iter;
 
 use value::Value;
 use suit::Suit;
 
 /// A playing card has a suit and a value
-#[derive(Copy, Clone, Hash, PartialEq, Eq, Debug)]
+#[derive(Copy, Clone, Hash, PartialEq, Eq, PartialOrd, Debug)]
 pub struct Card {
     /// The card's suit, e.g. Hearts
     pub suit: Suit,
     /// The card's value, e.g. Jack
     pub value: Value
+}
+
+impl Ord for Card {
+    /// Sorts by value and then suit
+    fn cmp(&self, other: &Card) -> Ordering
+    {
+        let result : Ordering = self.value.cmp(&other.value);
+        if result == Ordering::Equal {
+            return self.suit.cmp(&other.suit);
+        }
+        result
+    }
 }
 
 impl Card {

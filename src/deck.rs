@@ -1,7 +1,3 @@
-extern crate rand;
-
-use rand::Rng;
-
 use std::vec::Vec;
 use std::result::Result;
 
@@ -113,19 +109,7 @@ impl Deck {
 
     /// Shuffles all the undealt cards. Dealt cards are not shuffled.
     pub fn shuffle(&mut self) {
-        if self.cards.is_empty() {
-            return;
-        }
-
-        let mut cards = self.cards.as_mut_slice();
-        let mut rng =  rand::thread_rng();
-
-        // Knuth shuffle
-        let num_cards = cards.len();
-        for i in (1 .. num_cards - 1).rev() {
-            let j = rng.gen_range(0, i);
-            cards.swap(i, j);
-        }
+        super::shuffle(self.cards.as_mut_slice());
     }
 
     /// Reset the deck to its original order returning the dealt cards back to the end of the

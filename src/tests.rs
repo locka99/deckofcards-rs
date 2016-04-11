@@ -252,10 +252,12 @@ fn deck_shuffle_new_order() {
 
 #[test]
 fn hand_sort() {
+    // Create unordered hand
     let mut h = Hand::new();
     h.push(Card::new(Suit::Clubs, Value::Ten));
     h.push(Card::new(Suit::Clubs, Value::Two));
     h.push(Card::new(Suit::Hearts, Value::Ace));
+    // Sort
     h.sort_high_to_low();
     let cards = h.as_slice();
     let sc1 = cards[0];
@@ -267,4 +269,51 @@ fn hand_sort() {
     assert_eq!(sc1, Card::new(Suit::Hearts, Value::Ace));
     assert_eq!(sc2, Card::new(Suit::Clubs, Value::Ten));
     assert_eq!(sc3, Card::new(Suit::Clubs, Value::Two));
+}
+
+#[test]
+fn hand_sort_shuffle_deck() {
+    let mut deck = Deck::new();
+    deck.shuffle();
+
+    // Deal all the cards into the hand
+    let mut hand = Hand::new();
+    deck.deal_to_hand(&mut hand, 52);
+
+    // Sort
+    hand.sort_by_suit_then_value();
+    // Compare to default deck
+    let all_cards = Card::all_cards();
+    let hand_cards = hand.as_slice();
+    assert_eq!(all_cards.len(), hand_cards.len());
+
+    println!("Debug - the actual sort order");
+    {
+        let mut i = hand_cards.iter();
+        loop {
+            let n = i.next();
+            if n.is_none() {
+                break;
+            }
+            println!("card x = {}", n.unwrap().name());
+        }
+    }
+
+    println!("Check order is sorted");
+    // Iterate
+    let mut i_all = all_cards.iter();
+    let mut i_hand = hand_cards.iter();
+
+    loop {
+        let n_all = i_all.next();
+        let n_hand = i_hand.next();
+        if n_all.is_none() {
+            break;
+        }
+        let card_1 = n_all.unwrap();
+        let card_2 = n_hand.unwrap();
+        println!("card 1 = {}", card_1.name());
+        println!("card 2 = {}", card_2.name());
+        assert_eq!(card_1, card_2);
+    }
 }

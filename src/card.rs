@@ -17,11 +17,7 @@ impl Ord for Card {
     /// Sorts by value and then suit
     fn cmp(&self, other: &Card) -> Ordering
     {
-        let result : Ordering = self.value.cmp(&other.value);
-        if result == Ordering::Equal {
-            return self.suit.cmp(&other.suit);
-        }
-        result
+        self.cmp_value_then_suit(other)
     }
 }
 
@@ -33,6 +29,27 @@ impl Card {
             value: value
         }
     }
+
+    /// Compares by value and then suit
+    pub fn cmp_value_then_suit(&self, other: &Card) -> Ordering
+    {
+        let result : Ordering = self.value.cmp(&other.value);
+        if result == Ordering::Equal {
+            return self.suit.cmp(&other.suit);
+        }
+        result
+    }
+
+    /// Compares by suit and then value
+    pub fn cmp_suit_then_value(&self, other: &Card) -> Ordering
+    {
+        let result : Ordering = self.suit.cmp(&other.suit);
+        if result == Ordering::Equal {
+            return self.value.cmp(&other.value);
+        }
+        result
+    }
+
 
     /// Creates a card from a string such, e.g. "AS" returns Ace of Spades
     pub fn from_str(s : &str) -> Result<Card, &'static str> {
@@ -105,7 +122,6 @@ impl Card {
     /// Returns an array slice containing all the cards in a standard 52-card deck
     pub fn all_cards() -> &'static[Card] {
         static CARDS : [Card; 52] = [
-            Card { suit: Suit::Spades, value: Value::Ace },
             Card { suit: Suit::Spades, value: Value::Two },
             Card { suit: Suit::Spades, value: Value::Three },
             Card { suit: Suit::Spades, value: Value::Four },
@@ -118,8 +134,8 @@ impl Card {
             Card { suit: Suit::Spades, value: Value::Jack },
             Card { suit: Suit::Spades, value: Value::Queen },
             Card { suit: Suit::Spades, value: Value::King },
+            Card { suit: Suit::Spades, value: Value::Ace },
 
-            Card { suit: Suit::Hearts, value: Value::Ace },
             Card { suit: Suit::Hearts, value: Value::Two },
             Card { suit: Suit::Hearts, value: Value::Three },
             Card { suit: Suit::Hearts, value: Value::Four },
@@ -132,8 +148,8 @@ impl Card {
             Card { suit: Suit::Hearts, value: Value::Jack },
             Card { suit: Suit::Hearts, value: Value::Queen },
             Card { suit: Suit::Hearts, value: Value::King },
+            Card { suit: Suit::Hearts, value: Value::Ace },
 
-            Card { suit: Suit::Diamonds, value: Value::Ace },
             Card { suit: Suit::Diamonds, value: Value::Two },
             Card { suit: Suit::Diamonds, value: Value::Three },
             Card { suit: Suit::Diamonds, value: Value::Four },
@@ -146,8 +162,8 @@ impl Card {
             Card { suit: Suit::Diamonds, value: Value::Jack },
             Card { suit: Suit::Diamonds, value: Value::Queen },
             Card { suit: Suit::Diamonds, value: Value::King },
+            Card { suit: Suit::Diamonds, value: Value::Ace },
 
-            Card { suit: Suit::Clubs, value: Value::Ace },
             Card { suit: Suit::Clubs, value: Value::Two },
             Card { suit: Suit::Clubs, value: Value::Three },
             Card { suit: Suit::Clubs, value: Value::Four },
@@ -159,7 +175,8 @@ impl Card {
             Card { suit: Suit::Clubs, value: Value::Ten },
             Card { suit: Suit::Clubs, value: Value::Jack },
             Card { suit: Suit::Clubs, value: Value::Queen },
-            Card { suit: Suit::Clubs, value: Value::King }
+            Card { suit: Suit::Clubs, value: Value::King },
+            Card { suit: Suit::Clubs, value: Value::Ace }
         ];
         &CARDS
     }

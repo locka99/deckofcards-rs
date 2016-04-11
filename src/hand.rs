@@ -1,6 +1,6 @@
-use std::cmp::Ordering;
-
 use card::Card;
+
+// TODO deck and hand have so much in common they should share a trait for cards, shuffle, sort
 
 /// A hand is zero or more cards that represents some aspect of a game, e.g. the cards a person is holding
 pub struct Hand {
@@ -29,20 +29,19 @@ impl Hand {
         self.cards.sort();
     }
 
-    /// Sorts hand from highest to lowest
+    /// Shuffles the hand
+    pub fn shuffle(&mut self) {
+        super::shuffle(self.cards.as_mut_slice());
+    }
+
+    /// Sorts the hand by suit then value (low to high)
+    pub fn sort_by_suit_then_value(&mut self) {
+        super::sort_by_suit_then_value(self.cards.as_mut_slice());
+    }
+
+    /// Sorts hand by value (high to low), then suit
     pub fn sort_high_to_low(&mut self) {
-        // Reverse sort
-        let sort = |a : &Card, b : &Card| -> Ordering{
-            let order = a.cmp(b);
-            if order == Ordering::Less {
-                return Ordering::Greater;
-            }
-            else if order == Ordering::Greater {
-                return Ordering::Less;
-            }
-            Ordering::Equal
-        };
-        self.cards.sort_by(sort);
+        super::sort_high_to_low(self.cards.as_mut_slice());
     }
 
     /// Returns the cards as a slice to look at

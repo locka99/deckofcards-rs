@@ -1,8 +1,9 @@
+extern crate rand;
+
 use std::cmp::Ordering;
 use std::slice::Iter;
 
-use value::Value;
-use suit::Suit;
+use super::*;
 
 /// A playing card has a suit and a value
 #[derive(Copy, Clone, Hash, PartialEq, Eq, PartialOrd, Debug)]

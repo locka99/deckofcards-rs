@@ -258,8 +258,8 @@ fn hand_sort() {
     h.push(Card::new(Suit::Clubs, Value::Two));
     h.push(Card::new(Suit::Hearts, Value::Ace));
     // Sort
-    h.sort_high_to_low();
-    let cards = h.as_slice();
+    h.sort_descending_value_suit();
+    let cards = h.cards();
     let sc1 = cards[0];
     let sc2 = cards[1];
     let sc3 = cards[2];
@@ -281,10 +281,10 @@ fn hand_sort_shuffle_deck() {
     deck.deal_to_hand(&mut hand, 52);
 
     // Sort
-    hand.sort_by_suit_then_value();
+    hand.sort_suit_ascending_value();
     // Compare to default deck
     let all_cards = Card::all_cards();
-    let hand_cards = hand.as_slice();
+    let hand_cards = hand.cards();
     assert_eq!(all_cards.len(), hand_cards.len());
 
     println!("Debug - the actual sort order");

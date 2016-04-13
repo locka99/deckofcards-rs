@@ -1,8 +1,7 @@
 use std::vec::Vec;
 use std::result::Result;
 
-use card::Card;
-use hand::Hand;
+use super::*;
 
 /// This represents a deck of zero or more cards. Internally the deck consists of an undealt and a dealt pile of cards.
 /// The undealt pile starts off empty and receives cards as they are dealt from the undealt pile.
@@ -14,6 +13,28 @@ pub struct Deck {
     /// Dealt cards are cards which have been dealt in calls but are still members of the deck
     /// they remain dealt until the deck is reshuffled or reset.
     dealt_cards: Vec<Card>
+}
+
+impl Cards for Deck {
+    fn cards(&self) -> &[Card] {
+        self.cards.as_slice()
+    }
+
+    fn mut_cards(&mut self) -> &mut [Card] {
+        self.cards.as_mut_slice()
+    }
+
+    fn shuffle(&mut self) {
+        super::shuffle(self.mut_cards());
+    }
+
+    fn sort_suit_ascending_value(&mut self) {
+        super::sort_suit_ascending_value(self.mut_cards());
+    }
+
+    fn sort_descending_value_suit(&mut self) {
+        super::sort_descending_value_suit(self.mut_cards());
+    }
 }
 
 impl Deck {
@@ -105,11 +126,6 @@ impl Deck {
     /// Returns the dealt cards as a slice
     pub fn dealt_as_slice(&self) -> &[Card] {
         self.dealt_cards.as_slice()
-    }
-
-    /// Shuffles all the undealt cards. Dealt cards are not shuffled.
-    pub fn shuffle(&mut self) {
-        super::shuffle(self.cards.as_mut_slice());
     }
 
     /// Reset the deck to its original order returning the dealt cards back to the end of the

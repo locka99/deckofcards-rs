@@ -1,5 +1,7 @@
+use std::cmp::Ordering;
 use std::collections::HashSet;
 use std::slice::Iter;
+
 use super::*;
 
 #[test]
@@ -48,6 +50,47 @@ fn rank_char() {
     assert_eq!(Rank::Ace.to_char(), 'A');
     assert_eq!(Rank::Three.to_char(), '3');
     assert_eq!(Rank::King.to_char(), 'K');
+}
+
+#[test]
+fn rank_cmp() {
+    // Validate aces
+    assert_eq!(Rank::Ace.cmp(&Rank::Two), Ordering::Greater);
+    assert_eq!(Rank::Ace.cmp(&Rank::Ace), Ordering::Equal);
+    assert_eq!(Rank::Two.cmp(&Rank::Ace), Ordering::Less);
+
+    // Validate upwards
+    assert_eq!(Rank::Three.cmp(&Rank::Two), Ordering::Greater);
+    assert_eq!(Rank::Four.cmp(&Rank::Three), Ordering::Greater);
+    assert_eq!(Rank::Five.cmp(&Rank::Four), Ordering::Greater);
+    assert_eq!(Rank::Six.cmp(&Rank::Five), Ordering::Greater);
+    assert_eq!(Rank::Seven.cmp(&Rank::Six), Ordering::Greater);
+    assert_eq!(Rank::Eight.cmp(&Rank::Seven), Ordering::Greater);
+    assert_eq!(Rank::Nine.cmp(&Rank::Eight), Ordering::Greater);
+    assert_eq!(Rank::Ten.cmp(&Rank::Nine), Ordering::Greater);
+    assert_eq!(Rank::Jack.cmp(&Rank::Ten), Ordering::Greater);
+    assert_eq!(Rank::Queen.cmp(&Rank::Jack), Ordering::Greater);
+    assert_eq!(Rank::King.cmp(&Rank::Queen), Ordering::Greater);
+
+    // Validate downwards
+    assert_eq!(Rank::Two.cmp(&Rank::Three), Ordering::Less);
+    assert_eq!(Rank::Three.cmp(&Rank::Four), Ordering::Less);
+    assert_eq!(Rank::Four.cmp(&Rank::Five), Ordering::Less);
+    assert_eq!(Rank::Five.cmp(&Rank::Six), Ordering::Less);
+    assert_eq!(Rank::Six.cmp(&Rank::Seven), Ordering::Less);
+    assert_eq!(Rank::Seven.cmp(&Rank::Eight), Ordering::Less);
+    assert_eq!(Rank::Eight.cmp(&Rank::Nine), Ordering::Less);
+    assert_eq!(Rank::Nine.cmp(&Rank::Ten), Ordering::Less);
+    assert_eq!(Rank::Ten.cmp(&Rank::Jack), Ordering::Less);
+    assert_eq!(Rank::Jack.cmp(&Rank::Queen), Ordering::Less);
+    assert_eq!(Rank::Queen.cmp(&Rank::King), Ordering::Less);
+
+    // Compare with ace low
+    assert_eq!(Rank::Ace.cmp_ace_low(&Rank::Two), Ordering::Less);
+    assert_eq!(Rank::Ace.cmp_ace_low(&Rank::Ace), Ordering::Equal);
+    assert_eq!(Rank::Two.cmp_ace_low(&Rank::Ace), Ordering::Greater);
+    assert_eq!(Rank::King.cmp_ace_low(&Rank::Ace), Ordering::Greater);
+    assert_eq!(Rank::Ace.cmp_ace_low(&Rank::King), Ordering::Less);
 }
 
 #[test]

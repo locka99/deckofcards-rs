@@ -22,8 +22,7 @@ pub enum Rank {
 }
 
 impl Ord for Rank {
-    fn cmp(&self, other: &Rank) -> Ordering
-    {
+    fn cmp(&self, other: &Rank) -> Ordering {
         let ord1 = self.ordinal();
         let ord2 = other.ordinal();
         if ord1 < ord2 {
@@ -43,8 +42,8 @@ impl Rank {
         Rank::ranks().into_iter()
     }
 
-    /// Returns an ordinal for the rank
-    pub fn ordinal(&self) -> usize {
+    /// Returns an ordinal for the rank. 
+    fn ordinal(&self) -> usize {
         let result : usize;
         match *self {
             Two => result = 0,
@@ -62,6 +61,26 @@ impl Rank {
             Ace => result = 12
         }
         result
+    }
+
+    /// A comparator that treats an Ace as a 1
+    pub fn cmp_ace_low(&self, other : &Rank) -> Ordering {
+        // Fudge the ordinal so that Ace can be treated as a 0
+        let mut ord1 = self.ordinal() + 1;
+        let mut ord2 = other.ordinal() + 1;
+        if *self == Ace {
+            ord1 = 0;
+        }
+        if *other == Ace {
+            ord2 = 0;
+        }
+        if ord1 < ord2 {
+            return Ordering::Less;
+        }
+        else if ord1 > ord2 {
+            return Ordering::Greater;
+        }
+        Ordering::Equal
     }
 
     /// Returns a Rank represented by a char

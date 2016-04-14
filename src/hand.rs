@@ -1,6 +1,8 @@
 use super::*;
 
-/// A hand is zero or more cards that represents some aspect of a game, e.g. the cards a person is holding
+/// A hand is zero or more cards that represents some aspect of a game, e.g. the cards a person is holding.
+/// A hand may be shuffled or sorted and there are functions for adding or removing cards.
+/// Unlike a Deck, there is no concept of dealt or undealt cards.
 pub struct Hand {
     pub cards : Vec<Card>
 }

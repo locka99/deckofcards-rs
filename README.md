@@ -4,9 +4,11 @@ This is a simple library implemented in Rust that models a deck of cards.
 
 ## Cargo import
 
+You can use the module in the standard way by adding this to your Cargo.toml. Unless you have a reason not to, you should use the latest released version.
+
 ```
 [dependencies]
-deckofcards = "0.1.1"
+deckofcards = "0.2.0"
 ```
 
 ## Usage

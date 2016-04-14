@@ -44,8 +44,6 @@ impl Hand {
 
     /// Adds zero or more cards to the hand
     pub fn push_all(&mut self, cards: &[Card]) {
-        for card in cards {
-            self.cards.push(*card);
-        }
+        self.cards.extend(cards);
     }
 }

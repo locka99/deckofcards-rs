@@ -42,9 +42,7 @@ impl Deck {
     }
 
     fn populate(&mut self, cards: &[Card]) {
-        for card in cards {
-            self.cards.push(*card);
-        }
+        self.cards.extend(cards);
     }
 
     /// Returns the number of remaining undealt cards

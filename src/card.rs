@@ -41,6 +41,17 @@ impl Card {
         result
     }
 
+    /// Compares by descending value and then suit
+    pub fn cmp_desc_value_then_suit(&self, other: &Card) -> Ordering
+    {
+        // Reverse order of the value
+        let result : Ordering = self.value.cmp(&other.value).reverse();
+        if result == Ordering::Equal {
+            return self.suit.cmp(&other.suit);
+        }
+        result
+    }
+
     /// Compares by suit and then value
     pub fn cmp_suit_then_value(&self, other: &Card) -> Ordering
     {
@@ -51,6 +62,15 @@ impl Card {
         result
     }
 
+    /// Compares by suit and then value
+    pub fn cmp_suit_then_desc_value(&self, other: &Card) -> Ordering
+    {
+        let result : Ordering = self.suit.cmp(&other.suit);
+        if result == Ordering::Equal {
+            return self.value.cmp(&other.value).reverse();
+        }
+        result
+    }
 
     /// Creates a card from a string such, e.g. "AS" returns Ace of Spades
     pub fn from_str(s : &str) -> Result<Card, &'static str> {

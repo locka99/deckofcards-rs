@@ -23,28 +23,16 @@ impl Cards for Deck {
     fn mut_cards(&mut self) -> &mut [Card] {
         self.cards.as_mut_slice()
     }
-
-    fn shuffle(&mut self) {
-        super::shuffle(self.mut_cards());
-    }
-
-    fn sort_suit_ascending_value(&mut self) {
-        super::sort_suit_ascending_value(self.mut_cards());
-    }
-
-    fn sort_descending_value_suit(&mut self) {
-        super::sort_descending_value_suit(self.mut_cards());
-    }
 }
 
 impl Deck {
     /// Creates a new deck containing the standard set of 52 cards
     pub fn new() -> Deck {
-        Deck::new_from(Card::all_cards())
+        Deck::from_cards(Card::all_cards())
     }
 
     /// Creates a new deck containing the specified cards
-    pub fn new_from(cards : &[Card]) -> Deck {
+    pub fn from_cards(cards : &[Card]) -> Deck {
         let mut deck = Deck {
             cards: Vec::with_capacity(cards.len()),
             dealt_cards: Vec::with_capacity(cards.len())

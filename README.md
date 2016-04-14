@@ -39,5 +39,8 @@ fn main() {
 
     // Put dealt cards back onto the deck
     deck.reset();
+
+    // Sort by suit and then value
+    deck.sort_suit_ascending_value();
 }
 ```

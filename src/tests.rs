@@ -184,7 +184,7 @@ fn deck_reset() {
     let c5 = Card::new(Suit::Hearts, Value::Five);
     let c6 = Card::new(Suit::Clubs, Value::Six);
     let cards : [Card; 6] = [ c1, c2, c3, c4, c5, c6 ];
-    let mut d = Deck::new_from(&cards);
+    let mut d = Deck::from_cards(&cards);
     assert_eq!(d.count(), 6);
     assert_eq!(d.deal_one().unwrap(), c6);
     assert_eq!(d.deal_one().unwrap(), c5);
@@ -215,7 +215,7 @@ fn deck_shuffle_same_cards() {
     let c5 = Card::new(Suit::Hearts, Value::Five);
     let c6 = Card::new(Suit::Clubs, Value::Six);
     let cards : [Card; 6] = [ c1, c2, c3, c4, c5, c6 ];
-    let mut d = Deck::new_from(&cards);
+    let mut d = Deck::from_cards(&cards);
     d.shuffle();
     let mut set : HashSet<Card> = HashSet::new();
     loop {

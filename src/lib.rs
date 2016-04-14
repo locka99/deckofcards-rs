@@ -34,16 +34,39 @@ fn sort_suit_ascending_value(cards: &mut [Card]) {
 }
 
 /// Sorts the slice by value(high to low) and then suit
-fn sort_descending_value_suit(cards: &mut [Card]) {
+fn sort_suit_descending_value(cards: &mut [Card]) {
     // Reverse sort (since default is low to high)
-    // TODO suit will be reversed order which is broken - should have a cmp_high_to_low_value_then_suit
-    cards.sort_by(|a, b| a.cmp_value_then_suit(b).reverse());
+    cards.sort_by(|a, b| a.cmp_suit_then_desc_value(b));
 }
 
+/// Sorts the slice by value(high to low) and then suit
+fn sort_descending_value_suit(cards: &mut [Card]) {
+    // Reverse sort (since default is low to high)
+    cards.sort_by(|a, b| a.cmp_desc_value_then_suit(b));
+}
+
+/// Certain actions are common to a deck and a hand of cards
 pub trait Cards {
     fn cards(&self) -> &[Card];
     fn mut_cards(&mut self) -> &mut [Card];
-    fn shuffle(&mut self);
-    fn sort_suit_ascending_value(&mut self);
-    fn sort_descending_value_suit(&mut self);
+
+    /// Shuffle the cards into a random order
+    fn shuffle(&mut self) {
+        shuffle(self.mut_cards());
+    }
+
+    /// Sort the cards by suit and then by value (low to high)
+    fn sort_suit_ascending_value(&mut self) {
+        sort_suit_ascending_value(self.mut_cards());
+    }
+
+    /// Sorts the cards by suit and then by value (high to low)
+    fn sort_suit_descending_value(&mut self) {
+        sort_suit_descending_value(self.mut_cards());
+    }
+
+    /// Sort the cards by value (high to low) and then by suit
+    fn sort_descending_value_suit(&mut self) {
+        sort_descending_value_suit(self.mut_cards());
+    }
 }

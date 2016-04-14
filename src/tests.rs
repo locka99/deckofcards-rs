@@ -4,6 +4,14 @@ use std::slice::Iter;
 
 use super::*;
 
+fn make_card(s: &str) -> Card {
+    let r = Card::from_str(s);
+    if r.is_err() {
+        panic!("Expected a card");
+    }
+    r.unwrap()
+}
+
 #[test]
 fn rank_to_str() {
     assert_eq!("Ace", Rank::Ace.to_str());
@@ -127,23 +135,23 @@ fn suit_char() {
 
 #[test]
 fn card_equality() {
-    let card1 = Card::new(Suit::Hearts, Rank::Ace);
-    let card2 = Card::new(Suit::Hearts, Rank::Ace);
+    let card1 = make_card("AH");
+    let card2 = make_card("AH");
     assert_eq!(card1, card1);
     assert_eq!(card1, card2);
     assert_eq!(card2, card1);
-    let card3 = Card::new(Suit::Spades, Rank::Ace);
+    let card3 = make_card("AS");
     assert!(card1 != card3);
-    let card4 = Card::new(Suit::Hearts, Rank::Two);
+    let card4 = make_card("2H");
     assert!(card1 != card4);
 }
 
 #[test]
 fn card_from_str() {
-    assert_eq!(Card::from_str("TC").unwrap(), Card::new(Suit::Clubs, Rank::Ten));
-    assert_eq!(Card::from_str("CT").unwrap(), Card::new(Suit::Clubs, Rank::Ten));
-    assert_eq!(Card::from_str("AD").unwrap(), Card::new(Suit::Diamonds, Rank::Ace));
-    assert_eq!(Card::from_str("1S").unwrap(), Card::new(Suit::Spades, Rank::Ace));
+    assert_eq!(Card::from_str("TC").unwrap(), Card::new(Rank::Ten, Suit::Clubs));
+    assert_eq!(Card::from_str("CT").unwrap(), Card::new(Rank::Ten, Suit::Clubs));
+    assert_eq!(Card::from_str("AD").unwrap(), Card::new(Rank::Ace, Suit::Diamonds));
+    assert_eq!(Card::from_str("1S").unwrap(), Card::new(Rank::Ace, Suit::Spades));
     assert!(Card::from_str("ADC").is_err());
     assert!(Card::from_str("A").is_err());
     assert!(Card::from_str("C").is_err());
@@ -154,10 +162,10 @@ fn card_from_str() {
 
 #[test]
 fn card_to_str() {
-    assert_eq!(Card::new(Suit::Clubs, Rank::Ten).to_str(), "TC");
-    assert_eq!(Card::new(Suit::Spades, Rank::Queen).to_str(), "QS");
-    assert_eq!(Card::new(Suit::Diamonds, Rank::Ace).to_str(), "AD");
-    assert_eq!(Card::new(Suit::Hearts, Rank::Three).to_str(), "3H");
+    assert_eq!(Card::new(Rank::Ten, Suit::Clubs).to_str(), "TC");
+    assert_eq!(Card::new(Rank::Queen, Suit::Spades).to_str(), "QS");
+    assert_eq!(Card::new(Rank::Ace, Suit::Diamonds).to_str(), "AD");
+    assert_eq!(Card::new(Rank::Three, Suit::Hearts).to_str(), "3H");
 }
 
 #[test]
@@ -220,12 +228,12 @@ fn deck_dealt_cards() {
 
 #[test]
 fn deck_reset() {
-    let c1 = Card::new(Suit::Hearts, Rank::Ace);
-    let c2 = Card::new(Suit::Clubs, Rank::Two);
-    let c3 = Card::new(Suit::Diamonds, Rank::Three);
-    let c4 = Card::new(Suit::Spades, Rank::Four);
-    let c5 = Card::new(Suit::Hearts, Rank::Five);
-    let c6 = Card::new(Suit::Clubs, Rank::Six);
+    let c1 = make_card("AH");
+    let c2 = make_card("2C");
+    let c3 = make_card("3D");
+    let c4 = make_card("4S");
+    let c5 = make_card("5H");
+    let c6 = make_card("6C");
     let cards : [Card; 6] = [ c1, c2, c3, c4, c5, c6 ];
     let mut d = Deck::from_cards(&cards);
     assert_eq!(d.count(), 6);
@@ -251,12 +259,12 @@ fn deck_reset() {
 
 #[test]
 fn deck_shuffle_same_cards() {
-    let c1 = Card::new(Suit::Hearts, Rank::Ace);
-    let c2 = Card::new(Suit::Clubs, Rank::Two);
-    let c3 = Card::new(Suit::Diamonds, Rank::Three);
-    let c4 = Card::new(Suit::Spades, Rank::Four);
-    let c5 = Card::new(Suit::Hearts, Rank::Five);
-    let c6 = Card::new(Suit::Clubs, Rank::Six);
+    let c1 = make_card("AH");
+    let c2 = make_card("2C");
+    let c3 = make_card("3D");
+    let c4 = make_card("4S");
+    let c5 = make_card("5H");
+    let c6 = make_card("6C");
     let cards : [Card; 6] = [ c1, c2, c3, c4, c5, c6 ];
     let mut d = Deck::from_cards(&cards);
     d.shuffle();
@@ -297,9 +305,9 @@ fn deck_shuffle_new_order() {
 fn hand_sort() {
     // Create unordered hand
     let mut h = Hand::new();
-    h.push(Card::new(Suit::Clubs, Rank::Ten));
-    h.push(Card::new(Suit::Clubs, Rank::Two));
-    h.push(Card::new(Suit::Hearts, Rank::Ace));
+    h.push(make_card("TC"));
+    h.push(make_card("2C"));
+    h.push(make_card("AH"));
     // Sort
     h.sort_descending_rank_suit();
     let cards = h.cards();
@@ -309,9 +317,9 @@ fn hand_sort() {
     println!("card 1 = {}", sc1.name());
     println!("card 2 = {}", sc2.name());
     println!("card 3 = {}", sc3.name());
-    assert_eq!(sc1, Card::new(Suit::Hearts, Rank::Ace));
-    assert_eq!(sc2, Card::new(Suit::Clubs, Rank::Ten));
-    assert_eq!(sc3, Card::new(Suit::Clubs, Rank::Two));
+    assert_eq!(sc1, Card::new(Rank::Ace, Suit::Hearts));
+    assert_eq!(sc2, Card::new(Rank::Ten, Suit::Clubs));
+    assert_eq!(sc3, Card::new(Rank::Two, Suit::Clubs));
 }
 
 #[test]

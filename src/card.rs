@@ -8,10 +8,10 @@ use super::*;
 /// A playing card has a suit and a rank
 #[derive(Copy, Clone, Hash, PartialEq, Eq, PartialOrd, Debug)]
 pub struct Card {
-    /// The card's suit, e.g. Hearts
-    pub suit: Suit,
     /// The card's rank, e.g. Jack
-    pub rank: Rank
+    pub rank: Rank,
+    /// The card's suit, e.g. Hearts
+    pub suit: Suit
 }
 
 impl Ord for Card {
@@ -24,10 +24,10 @@ impl Ord for Card {
 
 impl Card {
     /// Creates a card with the given suit and rank
-    pub fn new(suit: Suit, rank: Rank) -> Card {
+    pub fn new(rank: Rank, suit: Suit) -> Card {
         Card {
-            suit: suit,
-            rank: rank
+            rank: rank,
+            suit: suit
         }
     }
 
@@ -86,13 +86,13 @@ impl Card {
         // Test rank / suit
         if let Ok(rank) = Rank::from_char(c1) {
             if let Ok(suit) = Suit::from_char(c2) {
-                return Ok(Card::new(suit, rank));
+                return Ok(Card::new(rank, suit));
             }
         }
         // Try suit / rank
         if let Ok(suit) = Suit::from_char(c1) {
             if let Ok(rank) = Rank::from_char(c2) {
-                return Ok(Card::new(suit, rank));
+                return Ok(Card::new(rank, suit));
             }
         }
 

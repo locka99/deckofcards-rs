@@ -46,4 +46,9 @@ impl Hand {
     pub fn push_all(&mut self, cards: &[Card]) {
         self.cards.extend(cards);
     }
+
+    /// Removes a card from the hand and returns it, panics if index does not exist
+    pub fn remove(&mut self, index: usize) -> Card {
+        self.cards.remove(index)
+    }
 }

@@ -42,8 +42,8 @@ impl Rank {
         Rank::ranks().into_iter()
     }
 
-    /// Returns an ordinal for the rank. 
-    fn ordinal(&self) -> usize {
+    /// Returns an ordinal for the rank.
+    pub fn ordinal(&self) -> usize {
         let result : usize;
         match *self {
             Two => result = 0,

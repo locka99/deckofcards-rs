@@ -1,11 +1,11 @@
 use std::cmp::Ordering;
 use std::slice::Iter;
 
-use self::Value::*;
+use self::Rank::*;
 
-/// Standard card values
+/// Standard card ranks
 #[derive(Copy, Clone, Hash, Eq, PartialEq, PartialOrd, Debug)]
-pub enum Value {
+pub enum Rank {
     Two,
     Three,
     Four,
@@ -21,8 +21,8 @@ pub enum Value {
     Ace
 }
 
-impl Ord for Value {
-    fn cmp(&self, other: &Value) -> Ordering
+impl Ord for Rank {
+    fn cmp(&self, other: &Rank) -> Ordering
     {
         let ord1 = self.ordinal();
         let ord2 = other.ordinal();
@@ -37,13 +37,13 @@ impl Ord for Value {
 }
 
 
-impl Value {
-    /// Returns an iterator through the standard values
-    pub fn iterator() -> Iter<'static, Value> {
-        Value::values().into_iter()
+impl Rank {
+    /// Returns an iterator through the standard ranks
+    pub fn iterator() -> Iter<'static, Rank> {
+        Rank::ranks().into_iter()
     }
 
-    /// Returns an ordinal for the card
+    /// Returns an ordinal for the rank
     pub fn ordinal(&self) -> usize {
         let result : usize;
         match *self {
@@ -64,54 +64,54 @@ impl Value {
         result
     }
 
-    /// Returns a Value represented by a char
-    pub fn from_char(ch: char) -> Result<Value, &'static str> {
-        let s = Value::chars().to_string();
+    /// Returns a Rank represented by a char
+    pub fn from_char(ch: char) -> Result<Rank, &'static str> {
+        let s = Rank::chars().to_string();
         for (i, c) in s.chars().enumerate() {
             // Special case for '1'->'A'
             if c == ch || (ch == '1' && c == 'A') {
-                return Ok(Value::values()[i]);
+                return Ok(Rank::ranks()[i]);
             }
         }
-        Err("Invalid value")
+        Err("Invalid rank")
     }
 
-    /// Turns a Value into a char
+    /// Turns a Rank into a char
     pub fn to_char(&self) -> char {
         let ord = self.ordinal();
-        let b : &[u8] = Value::chars().as_bytes();
+        let b : &[u8] = Rank::chars().as_bytes();
         b[ord] as char
     }
 
-    /// Turns a Value into a string
+    /// Turns a Rank into a string
     pub fn to_str(&self) -> &str {
-        let value_str;
+        let rank_str;
         match *self {
-            Two => value_str = "Two",
-            Three => value_str = "Three",
-            Four => value_str = "Four",
-            Five => value_str = "Five",
-            Six => value_str = "Six",
-            Seven => value_str = "Seven",
-            Eight => value_str = "Eight",
-            Nine => value_str = "Nine",
-            Ten => value_str = "Ten",
-            Jack => value_str = "Jack",
-            Queen => value_str = "Queen",
-            King => value_str = "King",
-            Ace => value_str = "Ace"
+            Two => rank_str = "Two",
+            Three => rank_str = "Three",
+            Four => rank_str = "Four",
+            Five => rank_str = "Five",
+            Six => rank_str = "Six",
+            Seven => rank_str = "Seven",
+            Eight => rank_str = "Eight",
+            Nine => rank_str = "Nine",
+            Ten => rank_str = "Ten",
+            Jack => rank_str = "Jack",
+            Queen => rank_str = "Queen",
+            King => rank_str = "King",
+            Ace => rank_str = "Ace"
         }
-        value_str
+        rank_str
     }
 
-    /// Gets the standard list of chars
-    fn values() -> &'static[Value] {
-        static VALUES: [Value; 13] =
+    /// Gets the standard card ranks
+    fn ranks() -> &'static[Rank] {
+        static RANKS: [Rank; 13] =
             [Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace];
-        &VALUES[..]
+        &RANKS[..]
     }
 
-    /// A string containing chars for each standard Value
+    /// A string containing chars for each standard Rank
     fn chars() -> &'static str {
         "23456789TJQKA"
     }

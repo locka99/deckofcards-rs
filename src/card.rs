@@ -5,69 +5,69 @@ use std::slice::Iter;
 
 use super::*;
 
-/// A playing card has a suit and a value
+/// A playing card has a suit and a rank
 #[derive(Copy, Clone, Hash, PartialEq, Eq, PartialOrd, Debug)]
 pub struct Card {
     /// The card's suit, e.g. Hearts
     pub suit: Suit,
-    /// The card's value, e.g. Jack
-    pub value: Value
+    /// The card's rank, e.g. Jack
+    pub rank: Rank
 }
 
 impl Ord for Card {
-    /// Sorts by value and then suit
+    /// Sorts by rank and then suit
     fn cmp(&self, other: &Card) -> Ordering
     {
-        self.cmp_value_then_suit(other)
+        self.cmp_rank_then_suit(other)
     }
 }
 
 impl Card {
-    /// Creates a card with the given suit and value
-    pub fn new(suit: Suit, value: Value) -> Card {
+    /// Creates a card with the given suit and rank
+    pub fn new(suit: Suit, rank: Rank) -> Card {
         Card {
             suit: suit,
-            value: value
+            rank: rank
         }
     }
 
-    /// Compares by value and then suit
-    pub fn cmp_value_then_suit(&self, other: &Card) -> Ordering
+    /// Compares by rank and then suit
+    pub fn cmp_rank_then_suit(&self, other: &Card) -> Ordering
     {
-        let result : Ordering = self.value.cmp(&other.value);
+        let result : Ordering = self.rank.cmp(&other.rank);
         if result == Ordering::Equal {
             return self.suit.cmp(&other.suit);
         }
         result
     }
 
-    /// Compares by descending value and then suit
-    pub fn cmp_desc_value_then_suit(&self, other: &Card) -> Ordering
+    /// Compares by descending rank and then suit
+    pub fn cmp_desc_rank_then_suit(&self, other: &Card) -> Ordering
     {
-        // Reverse order of the value
-        let result : Ordering = self.value.cmp(&other.value).reverse();
+        // Reverse order of the rank
+        let result : Ordering = self.rank.cmp(&other.rank).reverse();
         if result == Ordering::Equal {
             return self.suit.cmp(&other.suit);
         }
         result
     }
 
-    /// Compares by suit and then value
-    pub fn cmp_suit_then_value(&self, other: &Card) -> Ordering
+    /// Compares by suit and then rank
+    pub fn cmp_suit_then_rank(&self, other: &Card) -> Ordering
     {
         let result : Ordering = self.suit.cmp(&other.suit);
         if result == Ordering::Equal {
-            return self.value.cmp(&other.value);
+            return self.rank.cmp(&other.rank);
         }
         result
     }
 
-    /// Compares by suit and then value
-    pub fn cmp_suit_then_desc_value(&self, other: &Card) -> Ordering
+    /// Compares by suit and then rank
+    pub fn cmp_suit_then_desc_rank(&self, other: &Card) -> Ordering
     {
         let result : Ordering = self.suit.cmp(&other.suit);
         if result == Ordering::Equal {
-            return self.value.cmp(&other.value).reverse();
+            return self.rank.cmp(&other.rank).reverse();
         }
         result
     }
@@ -83,33 +83,33 @@ impl Card {
         let c1 = i.next().unwrap();
         let c2 = i.next().unwrap();
 
-        // Test value / suit
-        if let Ok(value) = Value::from_char(c1) {
+        // Test rank / suit
+        if let Ok(rank) = Rank::from_char(c1) {
             if let Ok(suit) = Suit::from_char(c2) {
-                return Ok(Card::new(suit, value));
+                return Ok(Card::new(suit, rank));
             }
         }
-        // Try suit / value
+        // Try suit / rank
         if let Ok(suit) = Suit::from_char(c1) {
-            if let Ok(value) = Value::from_char(c2) {
-                return Ok(Card::new(suit, value));
+            if let Ok(rank) = Rank::from_char(c2) {
+                return Ok(Card::new(suit, rank));
             }
         }
 
         Err("Invalid string")
     }
 
-    /// Turns the card into a short string consisting of value, suit, e.g. "AS"
+    /// Turns the card into a short string consisting of rank, suit, e.g. "AS"
     pub fn to_str(&self) -> String {
         let mut result = String::with_capacity(2);
-        result.push(self.value.to_char());
+        result.push(self.rank.to_char());
         result.push(self.suit.to_char());
         result
     }
 
     /// Returns an English formatted name of the card, e.g. "Ace of Spades"
     pub fn name(&self) -> String {
-        let mut name : String = self.value.to_str().to_string();
+        let mut name : String = self.rank.to_str().to_string();
         name = name + " of ";
         name = name + self.suit.to_str();
         name
@@ -117,7 +117,7 @@ impl Card {
 
     /// Returns an ordinal for the card which is a unique number which can be used for indexing
     pub fn ordinal(&self) -> usize {
-        self.suit.ordinal() * 13 + self.value.ordinal()
+        self.suit.ordinal() * 13 + self.rank.ordinal()
     }
 
     /// Tests if the card is Hearts
@@ -143,61 +143,61 @@ impl Card {
     /// Returns an array slice containing all the cards in a standard 52-card deck
     pub fn all_cards() -> &'static[Card] {
         static CARDS : [Card; 52] = [
-            Card { suit: Suit::Spades, value: Value::Two },
-            Card { suit: Suit::Spades, value: Value::Three },
-            Card { suit: Suit::Spades, value: Value::Four },
-            Card { suit: Suit::Spades, value: Value::Five },
-            Card { suit: Suit::Spades, value: Value::Six },
-            Card { suit: Suit::Spades, value: Value::Seven },
-            Card { suit: Suit::Spades, value: Value::Eight },
-            Card { suit: Suit::Spades, value: Value::Nine },
-            Card { suit: Suit::Spades, value: Value::Ten },
-            Card { suit: Suit::Spades, value: Value::Jack },
-            Card { suit: Suit::Spades, value: Value::Queen },
-            Card { suit: Suit::Spades, value: Value::King },
-            Card { suit: Suit::Spades, value: Value::Ace },
+            Card { suit: Suit::Spades, rank: Rank::Two },
+            Card { suit: Suit::Spades, rank: Rank::Three },
+            Card { suit: Suit::Spades, rank: Rank::Four },
+            Card { suit: Suit::Spades, rank: Rank::Five },
+            Card { suit: Suit::Spades, rank: Rank::Six },
+            Card { suit: Suit::Spades, rank: Rank::Seven },
+            Card { suit: Suit::Spades, rank: Rank::Eight },
+            Card { suit: Suit::Spades, rank: Rank::Nine },
+            Card { suit: Suit::Spades, rank: Rank::Ten },
+            Card { suit: Suit::Spades, rank: Rank::Jack },
+            Card { suit: Suit::Spades, rank: Rank::Queen },
+            Card { suit: Suit::Spades, rank: Rank::King },
+            Card { suit: Suit::Spades, rank: Rank::Ace },
 
-            Card { suit: Suit::Hearts, value: Value::Two },
-            Card { suit: Suit::Hearts, value: Value::Three },
-            Card { suit: Suit::Hearts, value: Value::Four },
-            Card { suit: Suit::Hearts, value: Value::Five },
-            Card { suit: Suit::Hearts, value: Value::Six },
-            Card { suit: Suit::Hearts, value: Value::Seven },
-            Card { suit: Suit::Hearts, value: Value::Eight },
-            Card { suit: Suit::Hearts, value: Value::Nine },
-            Card { suit: Suit::Hearts, value: Value::Ten },
-            Card { suit: Suit::Hearts, value: Value::Jack },
-            Card { suit: Suit::Hearts, value: Value::Queen },
-            Card { suit: Suit::Hearts, value: Value::King },
-            Card { suit: Suit::Hearts, value: Value::Ace },
+            Card { suit: Suit::Hearts, rank: Rank::Two },
+            Card { suit: Suit::Hearts, rank: Rank::Three },
+            Card { suit: Suit::Hearts, rank: Rank::Four },
+            Card { suit: Suit::Hearts, rank: Rank::Five },
+            Card { suit: Suit::Hearts, rank: Rank::Six },
+            Card { suit: Suit::Hearts, rank: Rank::Seven },
+            Card { suit: Suit::Hearts, rank: Rank::Eight },
+            Card { suit: Suit::Hearts, rank: Rank::Nine },
+            Card { suit: Suit::Hearts, rank: Rank::Ten },
+            Card { suit: Suit::Hearts, rank: Rank::Jack },
+            Card { suit: Suit::Hearts, rank: Rank::Queen },
+            Card { suit: Suit::Hearts, rank: Rank::King },
+            Card { suit: Suit::Hearts, rank: Rank::Ace },
 
-            Card { suit: Suit::Diamonds, value: Value::Two },
-            Card { suit: Suit::Diamonds, value: Value::Three },
-            Card { suit: Suit::Diamonds, value: Value::Four },
-            Card { suit: Suit::Diamonds, value: Value::Five },
-            Card { suit: Suit::Diamonds, value: Value::Six },
-            Card { suit: Suit::Diamonds, value: Value::Seven },
-            Card { suit: Suit::Diamonds, value: Value::Eight },
-            Card { suit: Suit::Diamonds, value: Value::Nine },
-            Card { suit: Suit::Diamonds, value: Value::Ten },
-            Card { suit: Suit::Diamonds, value: Value::Jack },
-            Card { suit: Suit::Diamonds, value: Value::Queen },
-            Card { suit: Suit::Diamonds, value: Value::King },
-            Card { suit: Suit::Diamonds, value: Value::Ace },
+            Card { suit: Suit::Diamonds, rank: Rank::Two },
+            Card { suit: Suit::Diamonds, rank: Rank::Three },
+            Card { suit: Suit::Diamonds, rank: Rank::Four },
+            Card { suit: Suit::Diamonds, rank: Rank::Five },
+            Card { suit: Suit::Diamonds, rank: Rank::Six },
+            Card { suit: Suit::Diamonds, rank: Rank::Seven },
+            Card { suit: Suit::Diamonds, rank: Rank::Eight },
+            Card { suit: Suit::Diamonds, rank: Rank::Nine },
+            Card { suit: Suit::Diamonds, rank: Rank::Ten },
+            Card { suit: Suit::Diamonds, rank: Rank::Jack },
+            Card { suit: Suit::Diamonds, rank: Rank::Queen },
+            Card { suit: Suit::Diamonds, rank: Rank::King },
+            Card { suit: Suit::Diamonds, rank: Rank::Ace },
 
-            Card { suit: Suit::Clubs, value: Value::Two },
-            Card { suit: Suit::Clubs, value: Value::Three },
-            Card { suit: Suit::Clubs, value: Value::Four },
-            Card { suit: Suit::Clubs, value: Value::Five },
-            Card { suit: Suit::Clubs, value: Value::Six },
-            Card { suit: Suit::Clubs, value: Value::Seven },
-            Card { suit: Suit::Clubs, value: Value::Eight },
-            Card { suit: Suit::Clubs, value: Value::Nine },
-            Card { suit: Suit::Clubs, value: Value::Ten },
-            Card { suit: Suit::Clubs, value: Value::Jack },
-            Card { suit: Suit::Clubs, value: Value::Queen },
-            Card { suit: Suit::Clubs, value: Value::King },
-            Card { suit: Suit::Clubs, value: Value::Ace }
+            Card { suit: Suit::Clubs, rank: Rank::Two },
+            Card { suit: Suit::Clubs, rank: Rank::Three },
+            Card { suit: Suit::Clubs, rank: Rank::Four },
+            Card { suit: Suit::Clubs, rank: Rank::Five },
+            Card { suit: Suit::Clubs, rank: Rank::Six },
+            Card { suit: Suit::Clubs, rank: Rank::Seven },
+            Card { suit: Suit::Clubs, rank: Rank::Eight },
+            Card { suit: Suit::Clubs, rank: Rank::Nine },
+            Card { suit: Suit::Clubs, rank: Rank::Ten },
+            Card { suit: Suit::Clubs, rank: Rank::Jack },
+            Card { suit: Suit::Clubs, rank: Rank::Queen },
+            Card { suit: Suit::Clubs, rank: Rank::King },
+            Card { suit: Suit::Clubs, rank: Rank::Ace }
         ];
         &CARDS
     }

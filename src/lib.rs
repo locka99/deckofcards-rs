@@ -1,7 +1,7 @@
 extern crate rand;
 
 mod suit;
-mod value;
+mod rank;
 mod card;
 mod deck;
 mod hand;
@@ -12,7 +12,7 @@ mod tests;
 use rand::Rng;
 
 pub use suit::Suit;
-pub use value::Value;
+pub use rank::Rank;
 pub use card::Card;
 pub use deck::Deck;
 pub use hand::Hand;
@@ -28,21 +28,21 @@ fn shuffle(cards: &mut [Card]) {
     }
 }
 
-/// Sorts the slice by suit then value (low to high)
-fn sort_suit_ascending_value(cards: &mut [Card]) {
-    cards.sort_by(|a, b| a.cmp_suit_then_value(b));
+/// Sorts the slice by suit then rank (low to high)
+fn sort_suit_ascending_rank(cards: &mut [Card]) {
+    cards.sort_by(|a, b| a.cmp_suit_then_rank(b));
 }
 
-/// Sorts the slice by value(high to low) and then suit
-fn sort_suit_descending_value(cards: &mut [Card]) {
+/// Sorts the slice by rank(high to low) and then suit
+fn sort_suit_descending_rank(cards: &mut [Card]) {
     // Reverse sort (since default is low to high)
-    cards.sort_by(|a, b| a.cmp_suit_then_desc_value(b));
+    cards.sort_by(|a, b| a.cmp_suit_then_desc_rank(b));
 }
 
-/// Sorts the slice by value(high to low) and then suit
-fn sort_descending_value_suit(cards: &mut [Card]) {
+/// Sorts the slice by rank(high to low) and then suit
+fn sort_descending_rank_suit(cards: &mut [Card]) {
     // Reverse sort (since default is low to high)
-    cards.sort_by(|a, b| a.cmp_desc_value_then_suit(b));
+    cards.sort_by(|a, b| a.cmp_desc_rank_then_suit(b));
 }
 
 /// Certain actions are common to a deck and a hand of cards
@@ -55,18 +55,18 @@ pub trait Cards {
         shuffle(self.mut_cards());
     }
 
-    /// Sort the cards by suit and then by value (low to high)
-    fn sort_suit_ascending_value(&mut self) {
-        sort_suit_ascending_value(self.mut_cards());
+    /// Sort the cards by suit and then by rank (low to high)
+    fn sort_suit_ascending_rank(&mut self) {
+        sort_suit_ascending_rank(self.mut_cards());
     }
 
-    /// Sorts the cards by suit and then by value (high to low)
-    fn sort_suit_descending_value(&mut self) {
-        sort_suit_descending_value(self.mut_cards());
+    /// Sorts the cards by suit and then by rank (high to low)
+    fn sort_suit_descending_rank(&mut self) {
+        sort_suit_descending_rank(self.mut_cards());
     }
 
-    /// Sort the cards by value (high to low) and then by suit
-    fn sort_descending_value_suit(&mut self) {
-        sort_descending_value_suit(self.mut_cards());
+    /// Sort the cards by rank (high to low) and then by suit
+    fn sort_descending_rank_suit(&mut self) {
+        sort_descending_rank_suit(self.mut_cards());
     }
 }

@@ -4,14 +4,6 @@ use std::slice::Iter;
 
 use super::*;
 
-fn make_card(s: &str) -> Card {
-    let r = Card::from_str(s);
-    if r.is_err() {
-        panic!("Expected a card");
-    }
-    r.unwrap()
-}
-
 #[test]
 fn rank_to_str() {
     assert_eq!("Ace", Rank::Ace.to_str());
@@ -135,14 +127,14 @@ fn suit_char() {
 
 #[test]
 fn card_equality() {
-    let card1 = make_card("AH");
-    let card2 = make_card("AH");
+    let card1 = card!("AH");
+    let card2 = card!("AH");
     assert_eq!(card1, card1);
     assert_eq!(card1, card2);
     assert_eq!(card2, card1);
-    let card3 = make_card("AS");
+    let card3 = card!("AS");
     assert!(card1 != card3);
-    let card4 = make_card("2H");
+    let card4 = card!("2H");
     assert!(card1 != card4);
 }
 
@@ -228,12 +220,12 @@ fn deck_dealt_cards() {
 
 #[test]
 fn deck_reset() {
-    let c1 = make_card("AH");
-    let c2 = make_card("2C");
-    let c3 = make_card("3D");
-    let c4 = make_card("4S");
-    let c5 = make_card("5H");
-    let c6 = make_card("6C");
+    let c1 = card!("AH");
+    let c2 = card!("2C");
+    let c3 = card!("3D");
+    let c4 = card!("4S");
+    let c5 = card!("5H");
+    let c6 = card!("6C");
     let cards : [Card; 6] = [ c1, c2, c3, c4, c5, c6 ];
     let mut d = Deck::from_cards(&cards);
     assert_eq!(d.count(), 6);
@@ -259,12 +251,12 @@ fn deck_reset() {
 
 #[test]
 fn deck_shuffle_same_cards() {
-    let c1 = make_card("AH");
-    let c2 = make_card("2C");
-    let c3 = make_card("3D");
-    let c4 = make_card("4S");
-    let c5 = make_card("5H");
-    let c6 = make_card("6C");
+    let c1 = card!("AH");
+    let c2 = card!("2C");
+    let c3 = card!("3D");
+    let c4 = card!("4S");
+    let c5 = card!("5H");
+    let c6 = card!("6C");
     let cards : [Card; 6] = [ c1, c2, c3, c4, c5, c6 ];
     let mut d = Deck::from_cards(&cards);
     d.shuffle();
@@ -305,9 +297,9 @@ fn deck_shuffle_new_order() {
 fn hand_sort() {
     // Create unordered hand
     let mut h = Hand::new();
-    h.push(make_card("TC"));
-    h.push(make_card("2C"));
-    h.push(make_card("AH"));
+    h.push(card!("TC"));
+    h.push(card!("2C"));
+    h.push(card!("AH"));
     // Sort
     h.sort_descending_rank_suit();
     let cards = h.cards();

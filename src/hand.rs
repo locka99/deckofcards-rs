@@ -47,6 +47,11 @@ impl Hand {
         self.cards.extend(cards);
     }
 
+    /// Returns the number of cards
+    pub fn len(&self) -> usize {
+        self.cards.len()
+    }
+
     /// Removes a card from the hand and returns it, panics if index does not exist
     pub fn remove(&mut self, index: usize) -> Card {
         self.cards.remove(index)

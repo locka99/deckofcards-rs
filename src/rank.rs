@@ -124,7 +124,7 @@ impl Rank {
     }
 
     /// Gets the standard card ranks
-    fn ranks() -> &'static[Rank] {
+    pub fn ranks() -> &'static[Rank] {
         static RANKS: [Rank; 13] =
             [Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace];
         &RANKS[..]

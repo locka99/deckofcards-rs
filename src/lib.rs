@@ -3,15 +3,13 @@ extern crate rand;
 mod suit;
 mod rank;
 mod card;
-mod deck;
-mod hand;
 
 /// Makes a card from its short string description, e.g. card!("AS") makes the Ace of Spades.
-/// This could be exported via #[macro_export] but currently isn't
+#[macro_export]
 macro_rules! card {
     ($s:expr) => {
         {
-            let cr = Card::from_str($s);
+            let cr = $crate::Card::from_str($s);
             if cr.is_err() {
                 panic!("Not a known card {}", $s);
             }
@@ -19,6 +17,26 @@ macro_rules! card {
         }
     };
 }
+
+#[macro_export]
+macro_rules! hand {
+    () => {
+        Hand::new()
+    };
+    ( $( $s:expr ),* ) => {
+        {
+            let mut hand = $crate::Hand::new();
+            $(
+                hand.push(card!($s));
+            )*
+            hand
+        }
+    };
+}
+
+mod deck;
+mod hand;
+
 
 #[cfg(test)]
 mod tests;

@@ -37,6 +37,18 @@ impl Hand {
         }
     }
 
+    /// Constructs a hand from a slice
+    pub fn from_strings(card_slice : &[&str]) -> Hand {
+        let mut cards : Vec<Card> = Vec::with_capacity(card_slice.len());
+        for s in card_slice {
+            let card = card!(s);
+            cards.push(card);
+        }
+        Hand {
+            cards: cards
+        }
+    }
+
     /// Adds one card to the hand
     pub fn push(&mut self, card : Card) {
         self.cards.push(card);

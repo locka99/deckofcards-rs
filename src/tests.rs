@@ -296,10 +296,7 @@ fn deck_shuffle_new_order() {
 #[test]
 fn hand_sort() {
     // Create unordered hand
-    let mut h = Hand::new();
-    h.push(card!("TC"));
-    h.push(card!("2C"));
-    h.push(card!("AH"));
+    let mut h = hand!("TC", "2C", "AH");
     // Sort
     h.sort_descending_rank_suit();
     let cards = h.cards();

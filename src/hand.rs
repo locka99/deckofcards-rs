@@ -55,7 +55,7 @@ impl Hand {
     }
 
     /// Adds zero or more cards to the hand
-    pub fn push_all(&mut self, cards: &[Card]) {
+    pub fn push_cards(&mut self, cards: &[Card]) {
         self.cards.extend(cards);
     }
 
@@ -67,5 +67,18 @@ impl Hand {
     /// Removes a card from the hand and returns it, panics if index does not exist
     pub fn remove(&mut self, index: usize) -> Card {
         self.cards.remove(index)
+    }
+
+    pub fn remove_cards(&mut self, cards: &[Card]) {
+        for c in cards {
+            self.remove_card(*c);
+        }
+    }
+
+    pub fn remove_card(&mut self, card: Card) {
+        let found = self.cards.iter().position(|x| *x == card);
+        if found.is_some() {
+            self.cards.remove(found.unwrap());
+        }
     }
 }

@@ -357,3 +357,16 @@ fn hand_sort_shuffle_deck() {
         assert_eq!(card_1, card_2);
     }
 }
+
+#[test]
+fn hand_cards_of_suit() {
+    let h = hand!("TC", "2C", "AS", "QS", "3D", "4D", "5D");
+    let clubs = h.cards_of_suit(Suit::Clubs);
+    assert_eq!(clubs.len(), 2);
+    let spades = h.cards_of_suit(Suit::Spades);
+    assert_eq!(spades.len(), 2);
+    let hearts = h.cards_of_suit(Suit::Hearts);
+    assert_eq!(hearts.len(), 0);
+    let diamonds = h.cards_of_suit(Suit::Diamonds);
+    assert_eq!(diamonds.len(), 3);
+}

@@ -81,4 +81,14 @@ impl Hand {
             self.cards.remove(found.unwrap());
         }
     }
+
+    pub fn cards_of_suit(&self, suit: Suit) -> Vec<Card> {
+        let mut result : Vec<Card> = Vec::new();
+        for c in self.cards.iter() {
+            if c.suit == suit {
+                result.push(*c);
+            }
+        }
+        result
+    }
 }

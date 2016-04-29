@@ -37,7 +37,6 @@ macro_rules! hand {
 mod deck;
 mod hand;
 
-
 #[cfg(test)]
 mod tests;
 

@@ -69,29 +69,28 @@ impl Hand {
         self.cards.remove(index)
     }
 
-    /// Removes the matching cards from the hand
+    /// Removes the first instance of every matching card from the hand
     pub fn remove_cards(&mut self, cards: &[Card]) {
         for c in cards {
             self.remove_card(*c);
         }
     }
 
-    /// Removes all instances of the matching card from the hand
+    /// Removes first instance of the matching card from the hand
     pub fn remove_card(&mut self, card: Card) {
-        let found = self.cards.iter().position(|x| *x == card);
+        let found = self.cards.iter().position(|c| *c == card);
         if found.is_some() {
             self.cards.remove(found.unwrap());
         }
     }
 
+    /// Returns cards of the specified rank
+    pub fn cards_of_rank(&self, rank: Rank) -> Vec<Card> {
+        self.cards.iter().filter(|c| c.rank == rank).cloned().collect()
+    }
+
     /// Returns cards of the specified suit
     pub fn cards_of_suit(&self, suit: Suit) -> Vec<Card> {
-        let mut result : Vec<Card> = Vec::new();
-        for c in self.cards.iter() {
-            if c.suit == suit {
-                result.push(*c);
-            }
-        }
-        result
+        self.cards.iter().filter(|c| c.suit == suit).cloned().collect()
     }
 }

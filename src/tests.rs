@@ -363,10 +363,28 @@ fn hand_cards_of_suit() {
     let h = hand!("TC", "2C", "AS", "QS", "3D", "4D", "5D");
     let clubs = h.cards_of_suit(Suit::Clubs);
     assert_eq!(clubs.len(), 2);
+    assert_eq!(clubs[0], card!("TC"));
+    assert_eq!(clubs[1], card!("2C"));
     let spades = h.cards_of_suit(Suit::Spades);
     assert_eq!(spades.len(), 2);
+    assert_eq!(spades[0], card!("AS"));
+    assert_eq!(spades[1], card!("QS"));
     let hearts = h.cards_of_suit(Suit::Hearts);
     assert_eq!(hearts.len(), 0);
     let diamonds = h.cards_of_suit(Suit::Diamonds);
     assert_eq!(diamonds.len(), 3);
+    assert_eq!(diamonds[0], card!("3D"));
+    assert_eq!(diamonds[1], card!("4D"));
+    assert_eq!(diamonds[2], card!("5D"));
+}
+
+#[test]
+fn hand_cards_of_rank() {
+    let h = hand!("TC", "2C", "AS", "AD", "3D", "4D", "5D");
+    let cards = h.cards_of_rank(Rank::Ace);
+    assert_eq!(cards.len(), 2);
+    assert_eq!(cards[0], card!("AS"));
+    assert_eq!(cards[1], card!("AD"));
+    let cards = h.cards_of_rank(Rank::King);
+    assert_eq!(cards.len(), 0);
 }

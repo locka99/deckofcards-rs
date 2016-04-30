@@ -168,7 +168,7 @@ fn card_all_cards() {
 
 #[test]
 fn deck_count() {
-    let mut d = Deck::new();
+    let mut d = deck!();
     assert_eq!(d.dealt_count(), 0);
     assert_eq!(d.undealt_count(), 52);
     assert_eq!(d.count(), 52);
@@ -192,7 +192,7 @@ fn deck_count() {
 #[test]
 fn deck_unique() {
     let mut set : HashSet<usize> = HashSet::new();
-    let mut d = Deck::new();
+    let mut d = deck!();
     loop {
         let c = d.deal_one();
         if c.is_err() {
@@ -206,7 +206,7 @@ fn deck_unique() {
 
 #[test]
 fn deck_dealt_cards() {
-    let mut d = Deck::new();
+    let mut d = deck!();
     let mut dealt = 0;
     loop {
         let c = d.deal_one();
@@ -279,7 +279,7 @@ fn deck_shuffle_same_cards() {
 
 #[test]
 fn deck_shuffle_new_order() {
-    let mut d = Deck::new();
+    let mut d = deck!();
     d.shuffle();
     loop {
         let c = d.deal_one();
@@ -313,7 +313,7 @@ fn hand_sort() {
 
 #[test]
 fn hand_sort_shuffle_deck() {
-    let mut deck = Deck::new();
+    let mut deck = deck!();
     deck.shuffle();
 
     // Deal all the cards into the hand

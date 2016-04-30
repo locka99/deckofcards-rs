@@ -34,6 +34,13 @@ macro_rules! hand {
     };
 }
 
+#[macro_export]
+macro_rules! deck {
+    () => {
+        Deck::new()
+    };
+}
+
 mod deck;
 mod hand;
 
@@ -74,6 +81,16 @@ fn sort_suit_descending_rank(cards: &mut [Card]) {
 fn sort_descending_rank_suit(cards: &mut [Card]) {
     // Reverse sort (since default is low to high)
     cards.sort_by(|a, b| a.cmp_desc_rank_then_suit(b));
+}
+
+/// Returns cards of the specified rank
+pub fn cards_of_rank(cards: &[Card], rank: Rank) -> Vec<Card> {
+    cards.iter().filter(|c| c.rank == rank).cloned().collect()
+}
+
+/// Returns cards of the specified suit
+pub fn cards_of_suit(cards: &[Card], suit: Suit) -> Vec<Card> {
+    cards.iter().filter(|c| c.suit == suit).cloned().collect()
 }
 
 /// Certain actions are common to a deck and a hand of cards

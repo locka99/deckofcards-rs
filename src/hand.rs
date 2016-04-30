@@ -86,11 +86,11 @@ impl Hand {
 
     /// Returns cards of the specified rank
     pub fn cards_of_rank(&self, rank: Rank) -> Vec<Card> {
-        self.cards.iter().filter(|c| c.rank == rank).cloned().collect()
+        cards_of_rank(&self.cards, rank)
     }
 
     /// Returns cards of the specified suit
     pub fn cards_of_suit(&self, suit: Suit) -> Vec<Card> {
-        self.cards.iter().filter(|c| c.suit == suit).cloned().collect()
+        cards_of_suit(&self.cards, suit)
     }
 }

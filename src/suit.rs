@@ -76,7 +76,7 @@ impl Suit {
     }
 
     /// The standard list of suits
-    fn suits() -> &'static[Suit] {
+    pub fn suits() -> &'static[Suit] {
         static SUITS: [Suit; 4] =
             [Spades, Hearts, Diamonds, Clubs];
         &SUITS[..]

@@ -69,12 +69,14 @@ impl Hand {
         self.cards.remove(index)
     }
 
+    /// Removes the matching cards from the hand
     pub fn remove_cards(&mut self, cards: &[Card]) {
         for c in cards {
             self.remove_card(*c);
         }
     }
 
+    /// Removes all instances of the matching card from the hand
     pub fn remove_card(&mut self, card: Card) {
         let found = self.cards.iter().position(|x| *x == card);
         if found.is_some() {
@@ -82,6 +84,7 @@ impl Hand {
         }
     }
 
+    /// Returns cards of the specified suit
     pub fn cards_of_suit(&self, suit: Suit) -> Vec<Card> {
         let mut result : Vec<Card> = Vec::new();
         for c in self.cards.iter() {

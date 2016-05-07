@@ -1,3 +1,5 @@
+use std::fmt;
+
 use super::*;
 
 /// A hand is zero or more cards that represents some aspect of a game, e.g. the cards a person is holding.
@@ -5,6 +7,19 @@ use super::*;
 /// Unlike a Deck, there is no concept of dealt or undealt cards.
 pub struct Hand {
     pub cards : Vec<Card>
+}
+
+impl fmt::Display for Hand {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let mut result = String::new();
+        for (i, card) in self.cards.iter().enumerate() {
+            result.push_str(&card.to_str());
+            if i < self.cards.len() - 1 {
+                result.push(',');
+            }
+        }
+        write!(f, "{}", result)
+    }
 }
 
 impl Cards for Hand {

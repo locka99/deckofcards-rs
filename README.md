@@ -8,7 +8,7 @@ You can use the module in the standard way by adding this to your Cargo.toml. Un
 
 ```
 [dependencies]
-deckofcards = "0.2.0"
+deckofcards = "0.3.0"
 ```
 
 ## Usage

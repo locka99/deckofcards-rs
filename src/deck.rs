@@ -94,7 +94,7 @@ impl Deck {
             let card : Result<Card, &'static str> = self.deal_one();
             if card.is_ok() {
                 dealt += 1;
-                hand.push(card.unwrap());
+                hand.push_card(card.unwrap());
             }
             else {
                 // No cards so no point continuing

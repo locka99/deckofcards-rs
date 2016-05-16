@@ -1,4 +1,5 @@
-use std::fmt;
+use std::fmt::{Display, Formatter, Result};
+use std::ops::AddAssign;
 
 use super::*;
 
@@ -9,8 +10,8 @@ pub struct Hand {
     pub cards : Vec<Card>
 }
 
-impl fmt::Display for Hand {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+impl Display for Hand {
+    fn fmt(&self, f: &mut Formatter) -> Result {
         let mut result = String::new();
         for (i, card) in self.cards.iter().enumerate() {
             result.push_str(&card.to_str());
@@ -19,6 +20,18 @@ impl fmt::Display for Hand {
             }
         }
         write!(f, "{}", result)
+    }
+}
+
+impl<'a> AddAssign<&'a Hand> for Hand {
+    fn add_assign(&mut self, rhs: &Hand) {
+        self.push_hand(rhs);
+    }
+}
+
+impl AddAssign<Card> for Hand {
+    fn add_assign(&mut self, rhs: Card) {
+        self.push_card(rhs);
     }
 }
 
@@ -65,7 +78,7 @@ impl Hand {
     }
 
     /// Adds one card to the hand
-    pub fn push(&mut self, card : Card) {
+    pub fn push_card(&mut self, card : Card) {
         self.cards.push(card);
     }
 

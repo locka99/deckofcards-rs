@@ -28,7 +28,7 @@ macro_rules! hand {
         {
             let mut hand = $crate::Hand::new();
             $(
-                hand.push(card!($s));
+                hand += card!($s);
             )*
             hand
         }
@@ -42,7 +42,7 @@ macro_rules! combine_hands {
         {
             let mut result = Hand::new();
             $(
-                result.push_hand($h);
+                result += $h;
             )*
             result
         }

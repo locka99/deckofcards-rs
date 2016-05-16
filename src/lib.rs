@@ -18,6 +18,7 @@ macro_rules! card {
     };
 }
 
+/// Makes a hand of cards from the list of cards specified by rank/suit, e.g. hand!("QH", "2D")
 #[macro_export]
 macro_rules! hand {
     () => {
@@ -32,6 +33,20 @@ macro_rules! hand {
             hand
         }
     };
+}
+
+/// Combines two hands into one hand. e.g. let hand_combined = combine_hands!(hand1, hand2);
+#[macro_export]
+macro_rules! combine_hands {
+    ( $( $h: expr),* ) => {
+        {
+            let mut result = Hand::new();
+            $(
+                result.push_hand($h);
+            )*
+            result
+        }
+    }
 }
 
 #[macro_export]

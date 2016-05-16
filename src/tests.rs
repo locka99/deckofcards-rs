@@ -294,6 +294,23 @@ fn deck_shuffle_new_order() {
 // TODO hand_sort_ranks_and_suits
 
 #[test]
+fn hand_combine_hands() {
+    let h1 = hand!("QD", "KS", "3C");
+    let h2 = hand!("4H", "JD", "3C");
+    let h3 = hand!("AS");
+    let hr = combine_hands!(&h1, &h2, &h3);
+    assert_eq!(hr.len(), 7);
+    let cards = hr.cards();
+    assert_eq!(cards[0], card!("QD"));
+    assert_eq!(cards[1], card!("KS"));
+    assert_eq!(cards[2], card!("3C"));
+    assert_eq!(cards[3], card!("4H"));
+    assert_eq!(cards[4], card!("JD"));
+    assert_eq!(cards[5], card!("3C"));
+    assert_eq!(cards[6], card!("AS"));
+}
+
+#[test]
 fn hand_sort() {
     // Create unordered hand
     let mut h = hand!("TC", "2C", "AH");

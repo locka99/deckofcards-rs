@@ -74,6 +74,11 @@ impl Hand {
         self.cards.extend(cards);
     }
 
+    /// Adds zero or more cards from some other hand
+    pub fn push_hand(&mut self, other: &Hand) {
+        self.cards.extend(other.cards());
+    }
+
     /// Returns the number of cards
     pub fn len(&self) -> usize {
         self.cards.len()

@@ -17,6 +17,8 @@ The Deck class contains zero or more Cards which are held in dealt or undealt pi
 
 By default if you don't shuffle, your deck will be sorted.
 
+You can deal cards out to a Vec<Card>, or also into the Hand object which provides additional sorting and filtering.
+
 Typical usage:
 
 ```

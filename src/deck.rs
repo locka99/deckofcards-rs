@@ -75,9 +75,9 @@ impl Deck {
     pub fn deal(&mut self, numcards : usize) -> Vec<Card> {
         let mut result : Vec<Card> = Vec::with_capacity(numcards as usize);
         for _ in 0..numcards {
-            let card : Result<Card, &'static str> = self.deal_one();
-            if card.is_ok() {
-                result.push(card.unwrap());
+            let dealt : Result<Card, &'static str> = self.deal_one();
+            if let Ok(card) = dealt {
+                result.push(card);
             }
             else {
                 // No cards so no point continuing
@@ -91,10 +91,10 @@ impl Deck {
     pub fn deal_to_hand(&mut self, hand : &mut Hand, numcards : usize) -> usize {
         let mut dealt : usize = 0;
         for _ in 0..numcards {
-            let card : Result<Card, &'static str> = self.deal_one();
-            if card.is_ok() {
+            let result : Result<Card, &'static str> = self.deal_one();
+            if let Ok(card) = result {
                 dealt += 1;
-                hand.push_card(card.unwrap());
+                hand.push_card(card);
             }
             else {
                 // No cards so no point continuing

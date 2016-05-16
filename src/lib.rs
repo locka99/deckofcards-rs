@@ -53,7 +53,7 @@ macro_rules! combine_hands {
 macro_rules! deck {
     () => {
         Deck::new()
-    };
+    }
 }
 
 mod deck;

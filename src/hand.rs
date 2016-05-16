@@ -54,7 +54,7 @@ impl Hand {
     }
 
     /// Makes a hand from another hand
-    pub fn from_hand(hand : Hand) -> Hand {
+    pub fn from_hand(hand : &Hand) -> Hand {
         Hand::from_cards(hand.cards())
     }
 

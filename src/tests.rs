@@ -289,9 +289,26 @@ fn deck_shuffle_new_order() {
     }
 }
 
-// TODO rank_sort
-// TODO suit_sort
-// TODO hand_sort_ranks_and_suits
+#[test]
+fn rank_sort() {
+    let mut ranks: Vec<Rank> = vec!(Rank::Ten, Rank::Jack, Rank::Ace, Rank::Two);
+    ranks.sort();
+    assert_eq!(ranks[0], Rank::Two);
+    assert_eq!(ranks[1], Rank::Ten);
+    assert_eq!(ranks[2], Rank::Jack);
+    assert_eq!(ranks[3], Rank::Ace);
+}
+
+#[test]
+fn suit_sort() {
+    // Natural sort order should be Spades, Hearts, Diamonds, Clubs
+    let mut suits: Vec<Suit> = vec!(Suit::Hearts, Suit::Clubs, Suit::Spades, Suit::Diamonds);
+    suits.sort();
+    assert_eq!(suits[0], Suit::Spades);
+    assert_eq!(suits[1], Suit::Hearts);
+    assert_eq!(suits[2], Suit::Diamonds);
+    assert_eq!(suits[3], Suit::Clubs);
+}
 
 #[test]
 fn hand_combine_hands() {
@@ -309,6 +326,9 @@ fn hand_combine_hands() {
     assert_eq!(cards[5], card!("3C"));
     assert_eq!(cards[6], card!("AS"));
 }
+
+// TODO hand_sort_suit_ascending_rank
+// TODO hand_sort_suit_descending_rank
 
 #[test]
 fn hand_sort() {

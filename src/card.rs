@@ -12,7 +12,7 @@ pub struct Card {
     /// The card's rank, e.g. Jack
     pub rank: Rank,
     /// The card's suit, e.g. Hearts
-    pub suit: Suit
+    pub suit: Suit,
 }
 
 impl fmt::Display for Card {
@@ -23,8 +23,7 @@ impl fmt::Display for Card {
 
 impl Ord for Card {
     /// Sorts by rank and then suit
-    fn cmp(&self, other: &Card) -> Ordering
-    {
+    fn cmp(&self, other: &Card) -> Ordering {
         self.cmp_rank_then_suit(other)
     }
 }
@@ -34,14 +33,13 @@ impl Card {
     pub fn new(rank: Rank, suit: Suit) -> Card {
         Card {
             rank: rank,
-            suit: suit
+            suit: suit,
         }
     }
 
     /// Compares by rank and then suit
-    pub fn cmp_rank_then_suit(&self, other: &Card) -> Ordering
-    {
-        let result : Ordering = self.rank.cmp(&other.rank);
+    pub fn cmp_rank_then_suit(&self, other: &Card) -> Ordering {
+        let result: Ordering = self.rank.cmp(&other.rank);
         if result == Ordering::Equal {
             return self.suit.cmp(&other.suit);
         }
@@ -49,10 +47,9 @@ impl Card {
     }
 
     /// Compares by descending rank and then suit
-    pub fn cmp_desc_rank_then_suit(&self, other: &Card) -> Ordering
-    {
+    pub fn cmp_desc_rank_then_suit(&self, other: &Card) -> Ordering {
         // Reverse order of the rank
-        let result : Ordering = self.rank.cmp(&other.rank).reverse();
+        let result: Ordering = self.rank.cmp(&other.rank).reverse();
         if result == Ordering::Equal {
             return self.suit.cmp(&other.suit);
         }
@@ -60,9 +57,8 @@ impl Card {
     }
 
     /// Compares by suit and then rank
-    pub fn cmp_suit_then_rank(&self, other: &Card) -> Ordering
-    {
-        let result : Ordering = self.suit.cmp(&other.suit);
+    pub fn cmp_suit_then_rank(&self, other: &Card) -> Ordering {
+        let result: Ordering = self.suit.cmp(&other.suit);
         if result == Ordering::Equal {
             return self.rank.cmp(&other.rank);
         }
@@ -70,9 +66,8 @@ impl Card {
     }
 
     /// Compares by suit and then rank
-    pub fn cmp_suit_then_desc_rank(&self, other: &Card) -> Ordering
-    {
-        let result : Ordering = self.suit.cmp(&other.suit);
+    pub fn cmp_suit_then_desc_rank(&self, other: &Card) -> Ordering {
+        let result: Ordering = self.suit.cmp(&other.suit);
         if result == Ordering::Equal {
             return self.rank.cmp(&other.rank).reverse();
         }
@@ -80,9 +75,9 @@ impl Card {
     }
 
     /// Creates a card from a string such, e.g. "AS" returns Ace of Spades
-    pub fn from_str(s : &str) -> Result<Card, &'static str> {
+    pub fn from_str(s: &str) -> Result<Card, &'static str> {
         if s.len() != 2 {
-            return Err("String is wrong length")
+            return Err("String is wrong length");
         }
 
         let s = s.to_string();
@@ -116,7 +111,7 @@ impl Card {
 
     /// Returns an English formatted name of the card, e.g. "Ace of Spades"
     pub fn name(&self) -> String {
-        let mut name : String = self.rank.to_str().to_string();
+        let mut name: String = self.rank.to_str().to_string();
         name = name + " of ";
         name = name + self.suit.to_str();
         name

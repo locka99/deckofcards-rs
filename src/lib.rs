@@ -75,7 +75,7 @@ fn shuffle(cards: &mut [Card]) {
     let mut rng = rand::thread_rng();
     // Knuth shuffle
     let num_cards = cards.len();
-    for i in (1 .. num_cards - 1).rev() {
+    for i in (1..num_cards - 1).rev() {
         let j = rng.gen_range(0, i);
         cards.swap(i, j);
     }

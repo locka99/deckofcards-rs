@@ -23,7 +23,7 @@ fn rank_to_str() {
 
 #[test]
 fn rank_iter() {
-    let mut i : Iter<'static, Rank>  = Rank::iterator();
+    let mut i: Iter<'static, Rank> = Rank::iterator();
     assert_eq!(*i.next().unwrap(), Rank::Two);
     assert_eq!(*i.next().unwrap(), Rank::Three);
     assert_eq!(*i.next().unwrap(), Rank::Four);
@@ -103,7 +103,7 @@ fn suit_to_str() {
 
 #[test]
 fn suit_iter() {
-    let mut i : Iter<'static, Suit>  = Suit::iterator();
+    let mut i: Iter<'static, Suit> = Suit::iterator();
     assert_eq!(*i.next().unwrap(), Suit::Spades);
     assert_eq!(*i.next().unwrap(), Suit::Hearts);
     assert_eq!(*i.next().unwrap(), Suit::Diamonds);
@@ -140,10 +140,14 @@ fn card_equality() {
 
 #[test]
 fn card_from_str() {
-    assert_eq!(Card::from_str("TC").unwrap(), Card::new(Rank::Ten, Suit::Clubs));
-    assert_eq!(Card::from_str("CT").unwrap(), Card::new(Rank::Ten, Suit::Clubs));
-    assert_eq!(Card::from_str("AD").unwrap(), Card::new(Rank::Ace, Suit::Diamonds));
-    assert_eq!(Card::from_str("1S").unwrap(), Card::new(Rank::Ace, Suit::Spades));
+    assert_eq!(Card::from_str("TC").unwrap(),
+               Card::new(Rank::Ten, Suit::Clubs));
+    assert_eq!(Card::from_str("CT").unwrap(),
+               Card::new(Rank::Ten, Suit::Clubs));
+    assert_eq!(Card::from_str("AD").unwrap(),
+               Card::new(Rank::Ace, Suit::Diamonds));
+    assert_eq!(Card::from_str("1S").unwrap(),
+               Card::new(Rank::Ace, Suit::Spades));
     assert!(Card::from_str("ADC").is_err());
     assert!(Card::from_str("A").is_err());
     assert!(Card::from_str("C").is_err());
@@ -191,7 +195,7 @@ fn deck_count() {
 
 #[test]
 fn deck_unique() {
-    let mut set : HashSet<usize> = HashSet::new();
+    let mut set: HashSet<usize> = HashSet::new();
     let mut d = deck!();
     loop {
         let c = d.deal_one();
@@ -226,7 +230,7 @@ fn deck_reset() {
     let c4 = card!("4S");
     let c5 = card!("5H");
     let c6 = card!("6C");
-    let cards : [Card; 6] = [ c1, c2, c3, c4, c5, c6 ];
+    let cards: [Card; 6] = [c1, c2, c3, c4, c5, c6];
     let mut d = Deck::from_cards(&cards);
     assert_eq!(d.count(), 6);
     assert_eq!(d.deal_one().unwrap(), c6);
@@ -257,10 +261,10 @@ fn deck_shuffle_same_cards() {
     let c4 = card!("4S");
     let c5 = card!("5H");
     let c6 = card!("6C");
-    let cards : [Card; 6] = [ c1, c2, c3, c4, c5, c6 ];
+    let cards: [Card; 6] = [c1, c2, c3, c4, c5, c6];
     let mut d = Deck::from_cards(&cards);
     d.shuffle();
-    let mut set : HashSet<Card> = HashSet::new();
+    let mut set: HashSet<Card> = HashSet::new();
     loop {
         let c = d.deal_one();
         if c.is_err() {
@@ -291,7 +295,7 @@ fn deck_shuffle_new_order() {
 
 #[test]
 fn rank_sort() {
-    let mut ranks: Vec<Rank> = vec!(Rank::Ten, Rank::Jack, Rank::Ace, Rank::Two);
+    let mut ranks: Vec<Rank> = vec![Rank::Ten, Rank::Jack, Rank::Ace, Rank::Two];
     ranks.sort();
     assert_eq!(ranks[0], Rank::Two);
     assert_eq!(ranks[1], Rank::Ten);
@@ -302,7 +306,7 @@ fn rank_sort() {
 #[test]
 fn suit_sort() {
     // Natural sort order should be Spades, Hearts, Diamonds, Clubs
-    let mut suits: Vec<Suit> = vec!(Suit::Hearts, Suit::Clubs, Suit::Spades, Suit::Diamonds);
+    let mut suits: Vec<Suit> = vec![Suit::Hearts, Suit::Clubs, Suit::Spades, Suit::Diamonds];
     suits.sort();
     assert_eq!(suits[0], Suit::Spades);
     assert_eq!(suits[1], Suit::Hearts);

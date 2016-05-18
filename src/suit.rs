@@ -9,18 +9,16 @@ pub enum Suit {
     Spades,
     Hearts,
     Diamonds,
-    Clubs
+    Clubs,
 }
 
 impl Ord for Suit {
-    fn cmp(&self, other: &Suit) -> Ordering
-    {
+    fn cmp(&self, other: &Suit) -> Ordering {
         let o1 = self.ordinal();
         let o2 = other.ordinal();
         if o1 < o2 {
             return Ordering::Less;
-        }
-        else if o1 > o2 {
+        } else if o1 > o2 {
             return Ordering::Greater;
         }
         Ordering::Equal
@@ -35,12 +33,12 @@ impl Suit {
 
     /// Returns an ordinal for the suit
     pub fn ordinal(&self) -> usize {
-        let result : usize;
+        let result: usize;
         match *self {
             Spades => result = 0,
             Hearts => result = 1,
             Diamonds => result = 2,
-            Clubs => result = 3
+            Clubs => result = 3,
         }
         result
     }
@@ -59,7 +57,7 @@ impl Suit {
     /// Returns a char that the represents the suit, e.g. 'H' for Hearts
     pub fn to_char(&self) -> char {
         let ord = self.ordinal();
-        let b : &[u8] = Suit::chars().as_bytes();
+        let b: &[u8] = Suit::chars().as_bytes();
         b[ord] as char
     }
 
@@ -70,15 +68,14 @@ impl Suit {
             Spades => suit_str = "Spades",
             Hearts => suit_str = "Hearts",
             Diamonds => suit_str = "Diamonds",
-            Clubs => suit_str = "Clubs"
+            Clubs => suit_str = "Clubs",
         }
         suit_str
     }
 
     /// The standard list of suits
-    pub fn suits() -> &'static[Suit] {
-        static SUITS: [Suit; 4] =
-            [Spades, Hearts, Diamonds, Clubs];
+    pub fn suits() -> &'static [Suit] {
+        static SUITS: [Suit; 4] = [Spades, Hearts, Diamonds, Clubs];
         &SUITS[..]
     }
 

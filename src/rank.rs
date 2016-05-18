@@ -18,7 +18,7 @@ pub enum Rank {
     Jack,
     Queen,
     King,
-    Ace
+    Ace,
 }
 
 impl Ord for Rank {
@@ -27,8 +27,7 @@ impl Ord for Rank {
         let ord2 = other.ordinal();
         if ord1 < ord2 {
             return Ordering::Less;
-        }
-        else if ord1 > ord2 {
+        } else if ord1 > ord2 {
             return Ordering::Greater;
         }
         Ordering::Equal
@@ -44,7 +43,7 @@ impl Rank {
 
     /// Returns an ordinal for the rank.
     pub fn ordinal(&self) -> usize {
-        let result : usize;
+        let result: usize;
         match *self {
             Two => result = 0,
             Three => result = 1,
@@ -58,13 +57,13 @@ impl Rank {
             Jack => result = 9,
             Queen => result = 10,
             King => result = 11,
-            Ace => result = 12
+            Ace => result = 12,
         }
         result
     }
 
     /// A comparator that treats an Ace as a 1
-    pub fn cmp_ace_low(&self, other : &Rank) -> Ordering {
+    pub fn cmp_ace_low(&self, other: &Rank) -> Ordering {
         // Fudge the ordinal so that Ace can be treated as a 0
         let mut ord1 = self.ordinal() + 1;
         let mut ord2 = other.ordinal() + 1;
@@ -76,8 +75,7 @@ impl Rank {
         }
         if ord1 < ord2 {
             return Ordering::Less;
-        }
-        else if ord1 > ord2 {
+        } else if ord1 > ord2 {
             return Ordering::Greater;
         }
         Ordering::Equal
@@ -98,7 +96,7 @@ impl Rank {
     /// Turns a Rank into a char
     pub fn to_char(&self) -> char {
         let ord = self.ordinal();
-        let b : &[u8] = Rank::chars().as_bytes();
+        let b: &[u8] = Rank::chars().as_bytes();
         b[ord] as char
     }
 
@@ -118,15 +116,15 @@ impl Rank {
             Jack => rank_str = "Jack",
             Queen => rank_str = "Queen",
             King => rank_str = "King",
-            Ace => rank_str = "Ace"
+            Ace => rank_str = "Ace",
         }
         rank_str
     }
 
     /// Gets the standard card ranks
-    pub fn ranks() -> &'static[Rank] {
-        static RANKS: [Rank; 13] =
-            [Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace];
+    pub fn ranks() -> &'static [Rank] {
+        static RANKS: [Rank; 13] = [Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack,
+                                    Queen, King, Ace];
         &RANKS[..]
     }
 

@@ -114,7 +114,7 @@ impl Deck {
         self.dealt_cards.as_slice()
     }
 
-    /// Return the dealt cards back to the end of the undealt pile. Order is preserved accordinging
+    /// Return the dealt cards back to the end of the undealt pile. Order is preserved according
     /// to the default order or the last shuffle.
     pub fn reset(&mut self) {
         // Put cards back into undealt deck in reverse order

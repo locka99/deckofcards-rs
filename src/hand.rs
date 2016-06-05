@@ -91,7 +91,12 @@ impl Hand {
     pub fn len(&self) -> usize {
         self.cards.len()
     }
-
+    
+    /// Clears the hand (makes it empty)
+    pub fn clear(&mut self) {
+    	self.cards.clear();
+    }
+    
     /// Removes a card from the hand and returns it, panics if index does not exist
     pub fn remove(&mut self, index: usize) -> Card {
         self.cards.remove(index)

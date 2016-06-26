@@ -294,6 +294,15 @@ fn deck_shuffle_new_order() {
 }
 
 #[test]
+fn deck_clone() {
+	let mut d: Deck = deck!();
+	d.deal(3);
+	let d2 = d.clone();
+	assert_eq!(d.cards().len(), d2.cards().len());
+	assert_eq!(d.dealt_cards().len(), d2.dealt_cards().len());
+}
+
+#[test]
 fn rank_sort() {
     let mut ranks: Vec<Rank> = vec![Rank::Ten, Rank::Jack, Rank::Ace, Rank::Two];
     ranks.sort();

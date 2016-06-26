@@ -27,6 +27,15 @@ impl Cards for Deck {
     }
 }
 
+impl Clone for Deck {
+	fn clone(&self) -> Deck {
+		Deck {
+			cards: self.cards.clone(),
+			dealt_cards: self.dealt_cards.clone()
+		}
+	}
+}
+
 impl Deck {
     /// Creates a new deck containing the standard set of 52 cards
     pub fn new() -> Deck {
@@ -60,6 +69,11 @@ impl Deck {
     /// Returns the number of cards, dealt or undealt, within the deck
     pub fn count(&self) -> usize {
         self.undealt_count() + self.dealt_count()
+    }
+    
+    /// Returns the collection of dealt cards
+    pub fn dealt_cards(&self) -> &[Card] {
+    	self.dealt_cards.as_slice()
     }
 
     /// Deals the card from the undealt pile. If there are no cards left, the function

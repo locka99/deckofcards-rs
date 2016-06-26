@@ -118,16 +118,6 @@ impl Deck {
         dealt
     }
 
-    /// Returns the undealt cards as a slice
-    pub fn undealt_as_slice(&self) -> &[Card] {
-        self.cards.as_slice()
-    }
-
-    /// Returns the dealt cards as a slice
-    pub fn dealt_as_slice(&self) -> &[Card] {
-        self.dealt_cards.as_slice()
-    }
-
     /// Return the dealt cards back to the end of the undealt pile. Order is preserved according
     /// to the default order or the last shuffle.
     pub fn reset(&mut self) {

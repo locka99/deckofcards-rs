@@ -32,7 +32,6 @@ impl Clone for Hand {
 	}
 }
 
-
 impl<'a> AddAssign<&'a Hand> for Hand {
     fn add_assign(&mut self, rhs: &Hand) {
         self.push_hand(rhs);

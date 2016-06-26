@@ -24,6 +24,15 @@ impl Display for Hand {
     }
 }
 
+impl Clone for Hand {
+	fn clone(&self) -> Hand {
+		return Hand {
+			cards: self.cards.clone()
+		}
+	}
+}
+
+
 impl<'a> AddAssign<&'a Hand> for Hand {
     fn add_assign(&mut self, rhs: &Hand) {
         self.push_hand(rhs);

@@ -11,6 +11,14 @@ You can use the module in the standard way by adding this to your Cargo.toml. Un
 deckofcards = "0.3.1"
 ```
 
+## API documentation
+
+Once you've added a dependency you can get class documentation like so:
+
+```
+cargo doc
+```
+
 ## Usage
 
 The Deck class contains zero or more Cards which are held in dealt or undealt piles. You can shuffle() the deck. You can deal_one() card or deal_many(). You can reset() to return dealt cards to the undealt pile.

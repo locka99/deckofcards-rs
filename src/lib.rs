@@ -53,17 +53,21 @@ macro_rules! deck {
 }
 
 mod suit;
-mod rank;
-mod card;
-mod cards;
-mod deck;
-mod hand;
-
 pub use suit::Suit;
+
+mod rank;
 pub use rank::Rank;
+
+mod card;
 pub use card::Card;
+
+mod cards;
 pub use cards::{Cards, cards_of_suit, cards_of_rank};
+
+mod deck;
 pub use deck::Deck;
+
+mod hand;
 pub use hand::Hand;
 
 #[cfg(test)]

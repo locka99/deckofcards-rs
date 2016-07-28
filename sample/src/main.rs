@@ -12,9 +12,11 @@ fn main() {
     // Deal a card
     for _ in 0..10 {
         let next = deck.deal_one();
-        if next.is_ok() {
-          let card = next.unwrap();
-          println!("You dealt a {}", card.name());
+        if let Ok(card) = next {
+            println!("You dealt a {}", card.name());
+        }
+        else {
+            panic!("We should have enough cards for this not to happen")
         }
     }
 

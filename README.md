@@ -27,32 +27,4 @@ By default if you don't shuffle, your deck will be sorted.
 
 You can deal cards out to a Vec<Card>, or also into the Hand object which provides additional sorting and filtering.
 
-Typical usage:
-
-```
-extern crate deckofcards;
-
-use deckofcards::Deck;
-
-fn main() {
-    let mut deck = Deck::new();
-
-    // Shuffle the deck
-    deck.shuffle();
-
-    // Deal a card
-    for _ in 0..10 {
-        let next = deck.deal_one();
-        if next.is_ok() {
-          let card = next.unwrap();
-          println!("You dealt a {}", card.name());
-        }
-    }
-
-    // Put dealt cards back onto the deck
-    deck.reset();
-
-    // Sort by suit and then value
-    deck.sort_suit_ascending_value();
-}
-```
+See sample/ folder for a simple sample that creates a deck, shuffles it and deals out some cards from the deck.

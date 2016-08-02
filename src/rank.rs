@@ -3,7 +3,7 @@ use std::slice::Iter;
 
 use self::Rank::*;
 
-/// Standard card ranks
+/// This enumeration holds the ranks in a standard deck of cards.
 #[derive(Copy, Clone, Hash, Eq, PartialEq, PartialOrd, Debug)]
 pub enum Rank {
     Two,

@@ -3,7 +3,7 @@ use std::slice::Iter;
 
 use self::Suit::*;
 
-/// Standard card suits
+/// This enumeration holds the suits in a standard deck of cards.
 #[derive(Copy, Clone, Hash, PartialEq, Eq, PartialOrd, Debug)]
 pub enum Suit {
     Spades,

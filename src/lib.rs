@@ -1,6 +1,15 @@
 extern crate rand;
 
-/// Makes a card from its short string description, e.g. card!("AS") makes the Ace of Spades.
+/// Creates a `Card` and sets its rank / suit from its abbreviated string description. The description
+/// is of the form "RS", Rank followed by Suit, e.g. "2D" for Two of Diamonds.
+///
+/// # Examples
+///
+/// Creates the Ace of Spades
+///
+/// ```
+/// let card = card!("AS");
+/// ```
 #[macro_export]
 macro_rules! card {
     ($s:expr) => {
@@ -14,7 +23,15 @@ macro_rules! card {
     };
 }
 
-/// Makes a hand of cards from the list of cards specified by rank/suit, e.g. hand!("QH", "2D")
+/// Creates a `Hand` of cards from the list of abbreviated cards string specified by rank / suit,
+///
+/// # Examples
+///
+/// Creates a hand containing the Queen of Hearts and Two of Diamonds.
+///
+/// ```
+/// let hand = hand!("QH", "2D");
+/// ```
 #[macro_export]
 macro_rules! hand {
     () => {
@@ -31,7 +48,16 @@ macro_rules! hand {
     };
 }
 
-/// Combines two hands into one hand. e.g. let hand_combined = combine_hands!(hand1, hand2);
+/// Creates a new `Hand` that is the combination two hands into one hand. This does not consume
+/// the original hands.
+///
+/// # Examples
+///
+/// Combine hand1 and hand2 into a new hand_combined.
+///
+/// ```
+/// let hand_combined = combine_hands!(hand1, hand2);
+/// ```
 #[macro_export]
 macro_rules! combine_hands {
     ( $( $h: expr),* ) => {
@@ -45,6 +71,7 @@ macro_rules! combine_hands {
     }
 }
 
+/// Creates a standard deck of 52 playing cards
 #[macro_export]
 macro_rules! deck {
     () => {
@@ -53,22 +80,22 @@ macro_rules! deck {
 }
 
 mod suit;
-pub use suit::Suit;
+pub use suit::{Suit};
 
 mod rank;
-pub use rank::Rank;
+pub use rank::{Rank};
 
 mod card;
-pub use card::Card;
+pub use card::{Card};
 
 mod cards;
 pub use cards::{Cards, cards_of_suit, cards_of_rank};
 
 mod deck;
-pub use deck::Deck;
+pub use deck::{Deck};
 
 mod hand;
-pub use hand::Hand;
+pub use hand::{Hand};
 
 #[cfg(test)]
 mod tests;

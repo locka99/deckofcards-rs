@@ -3,9 +3,9 @@ use std::ops::AddAssign;
 
 use super::*;
 
-/// A hand is zero or more cards that represents some aspect of a game,
+/// A `Hand` is zero or more cards that represents some aspect of a game,
 /// e.g. the cards a person is holding. A hand may be shuffled or sorted
-/// and there are functions for adding or removing cards. Unlike a Deck,
+/// and there are functions for adding or removing cards. Unlike a `Deck`,
 /// there is no concept of dealt or undealt cards.
 pub struct Hand {
     pub cards: Vec<Card>,
@@ -55,22 +55,22 @@ impl Cards for Hand {
 }
 
 impl Hand {
-    /// Make a new empty hand
+    /// Make a new empty `Hand`
     pub fn new() -> Hand {
         Hand { cards: Vec::new() }
     }
 
-    /// Makes a hand from another hand
+    /// Makes a `Hand` from an existing hand
     pub fn from_hand(hand: &Hand) -> Hand {
         Hand::from_cards(hand.cards())
     }
 
-    /// Makes a hand from a slice
+    /// Makes a `Hand` from a slice
     pub fn from_cards(cards: &[Card]) -> Hand {
         Hand { cards: Vec::from(cards) }
     }
 
-    /// Constructs a hand from a slice
+    /// Constructs a `Hand` from a slice of strings with abbreviated card rank / suit values
     pub fn from_strings(card_slice: &[&str]) -> Hand {
         let mut cards: Vec<Card> = Vec::with_capacity(card_slice.len());
         for s in card_slice {
@@ -80,17 +80,17 @@ impl Hand {
         Hand { cards: cards }
     }
 
-    /// Adds one card to the hand
+    /// Adds one `Card` to the `Hand`
     pub fn push_card(&mut self, card: Card) {
         self.cards.push(card);
     }
 
-    /// Adds zero or more cards to the hand
+    /// Adds zero or more cards to the `Hand`
     pub fn push_cards(&mut self, cards: &[Card]) {
         self.cards.extend(cards);
     }
 
-    /// Adds zero or more cards from some other hand
+    /// Adds zero or more cards from some other `Hand`
     pub fn push_hand(&mut self, other: &Hand) {
         self.cards.extend(other.cards());
     }
@@ -100,24 +100,24 @@ impl Hand {
         self.cards.len()
     }
     
-    /// Clears the hand (makes it empty)
+    /// Clears the `Hand` (makes it empty)
     pub fn clear(&mut self) {
     	self.cards.clear();
     }
     
-    /// Removes a card from the hand and returns it, panics if index does not exist
+    /// Removes a `Card` from the `Hand` and returns it, panics if index does not exist
     pub fn remove(&mut self, index: usize) -> Card {
         self.cards.remove(index)
     }
 
-    /// Removes the first instance of every matching card from the hand
+    /// Removes the first instance of every matching card from the `Hand`
     pub fn remove_cards(&mut self, cards: &[Card]) {
         for c in cards {
             self.remove_card(*c);
         }
     }
 
-    /// Removes first instance of the matching card from the hand
+    /// Removes first instance of the matching card from the `Hand`
     pub fn remove_card(&mut self, card: Card) {
         let found = self.cards.iter().position(|c| *c == card);
         if found.is_some() {
@@ -125,12 +125,12 @@ impl Hand {
         }
     }
 
-    /// Returns cards of the specified rank
+    /// Returns cards of the specified `Rank`
     pub fn cards_of_rank(&self, rank: Rank) -> Vec<Card> {
         cards_of_rank(&self.cards, rank)
     }
 
-    /// Returns cards of the specified suit
+    /// Returns cards of the specified `Suit`
     pub fn cards_of_suit(&self, suit: Suit) -> Vec<Card> {
         cards_of_suit(&self.cards, suit)
     }

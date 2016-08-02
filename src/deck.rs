@@ -3,12 +3,16 @@ use std::result::Result;
 
 use super::*;
 
-/// This represents a deck of zero or more cards. Internally the
-/// deck consists of an undealt and a dealt pile of cards.
-/// The undealt pile starts off empty and receives cards as they
-/// are dealt from the undealt pile.
-/// The deck may be reset to return it to its original state. A
-/// deck may be shuffled to randomize its order.
+/// The `Deck` represents a deck of zero or more cards. Internally the
+/// deck consists of an undealt and a dealt pile of cards. The undealt pile starts off empty and
+/// receives cards as they are dealt from the undealt pile.
+///
+/// The deck may be reset to return it to its original state. A deck may be shuffled to randomize
+/// its order.
+///
+/// A deck can contain more than one card with the same rank / suit combination.
+///
+/// A deck cannot have more cards added or removed to it once it is created.
 pub struct Deck {
     /// A deck contains zero or more cards
     cards: Vec<Card>,
@@ -37,12 +41,12 @@ impl Clone for Deck {
 }
 
 impl Deck {
-    /// Creates a new deck containing the standard set of 52 cards
+    /// Creates a new `Deck` containing the standard set of 52 cards
     pub fn new() -> Deck {
         Deck::from_cards(Card::all_cards())
     }
 
-    /// Creates a new deck containing the specified cards
+    /// Creates a new `Deck` containing the specified cards
     pub fn from_cards(cards: &[Card]) -> Deck {
         let mut deck = Deck {
             cards: Vec::with_capacity(cards.len()),
@@ -56,17 +60,17 @@ impl Deck {
         self.cards.extend(cards);
     }
 
-    /// Returns the number of remaining undealt cards
+    /// Returns the number of remaining undealt cards in the `Deck`
     pub fn undealt_count(&self) -> usize {
         self.cards.len()
     }
 
-    /// Returns the number of dealt cards
+    /// Returns the number of dealt cards in the `Deck`
     pub fn dealt_count(&self) -> usize {
         self.dealt_cards.len()
     }
 
-    /// Returns the number of cards, dealt or undealt, within the deck
+    /// Returns the number of cards, dealt or undealt, within the `Deck`
     pub fn count(&self) -> usize {
         self.undealt_count() + self.dealt_count()
     }
@@ -102,7 +106,7 @@ impl Deck {
         result
     }
 
-    /// Deals one or more card straight to the hand. Returns the number of cards dealt
+    /// Deals one or more card straight to the `Hand`. Returns the number of cards dealt.
     pub fn deal_to_hand(&mut self, hand: &mut Hand, numcards: usize) -> usize {
         let mut dealt: usize = 0;
         for _ in 0..numcards {

@@ -6,12 +6,19 @@ use std::slice::Iter;
 
 use super::*;
 
-/// A playing card has a suit and a rank
+/// A `Card` has a `Rank` and a `Suit` and represents a card from the normal 52-card
+/// playing deck.
+///
+/// # Example
+///
+/// ```
+/// let card = Card::new(Rank::Jack, Suit::Hearts);
+/// ```
 #[derive(Copy, Clone, Hash, PartialEq, Eq, PartialOrd, Debug)]
 pub struct Card {
-    /// The card's rank, e.g. Jack
+    /// The card's `Rank`, e.g. Jack
     pub rank: Rank,
-    /// The card's suit, e.g. Hearts
+    /// The card's `Suit`, e.g. Hearts
     pub suit: Suit,
 }
 

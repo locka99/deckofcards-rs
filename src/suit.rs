@@ -33,14 +33,12 @@ impl Suit {
 
     /// Returns an ordinal for the suit
     pub fn ordinal(&self) -> usize {
-        let result: usize;
         match *self {
-            Spades => result = 0,
-            Hearts => result = 1,
-            Diamonds => result = 2,
-            Clubs => result = 3,
+            Spades => 0,
+            Hearts => 1,
+            Diamonds => 2,
+            Clubs => 3,
         }
-        result
     }
 
     /// Returns a Suit for the character, e.g. Hearts for 'H'
@@ -62,15 +60,13 @@ impl Suit {
     }
 
     /// Returns a string name of the suit
-    pub fn to_str(&self) -> &str {
-        let suit_str;
+    pub fn to_str(&self) -> &'static str {
         match *self {
-            Spades => suit_str = "Spades",
-            Hearts => suit_str = "Hearts",
-            Diamonds => suit_str = "Diamonds",
-            Clubs => suit_str = "Clubs",
+            Spades => "Spades",
+            Hearts => "Hearts",
+            Diamonds => "Diamonds",
+            Clubs => "Clubs",
         }
-        suit_str
     }
 
     /// The standard list of suits

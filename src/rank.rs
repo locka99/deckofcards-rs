@@ -43,23 +43,21 @@ impl Rank {
 
     /// Returns an ordinal for the rank.
     pub fn ordinal(&self) -> usize {
-        let result: usize;
         match *self {
-            Two => result = 0,
-            Three => result = 1,
-            Four => result = 2,
-            Five => result = 3,
-            Six => result = 4,
-            Seven => result = 5,
-            Eight => result = 6,
-            Nine => result = 7,
-            Ten => result = 8,
-            Jack => result = 9,
-            Queen => result = 10,
-            King => result = 11,
-            Ace => result = 12,
+            Two => 0,
+            Three => 1,
+            Four => 2,
+            Five => 3,
+            Six => 4,
+            Seven => 5,
+            Eight => 6,
+            Nine => 7,
+            Ten => 8,
+            Jack => 9,
+            Queen => 10,
+            King => 11,
+            Ace => 12,
         }
-        result
     }
 
     /// A comparator that treats an Ace as a 1
@@ -101,24 +99,22 @@ impl Rank {
     }
 
     /// Turns a Rank into a string
-    pub fn to_str(&self) -> &str {
-        let rank_str;
+    pub fn to_str(&self) -> &'static str {
         match *self {
-            Two => rank_str = "Two",
-            Three => rank_str = "Three",
-            Four => rank_str = "Four",
-            Five => rank_str = "Five",
-            Six => rank_str = "Six",
-            Seven => rank_str = "Seven",
-            Eight => rank_str = "Eight",
-            Nine => rank_str = "Nine",
-            Ten => rank_str = "Ten",
-            Jack => rank_str = "Jack",
-            Queen => rank_str = "Queen",
-            King => rank_str = "King",
-            Ace => rank_str = "Ace",
+            Two => "Two",
+            Three => "Three",
+            Four => "Four",
+            Five => "Five",
+            Six => "Six",
+            Seven => "Seven",
+            Eight => "Eight",
+            Nine => "Nine",
+            Ten => "Ten",
+            Jack => "Jack",
+            Queen => "Queen",
+            King => "King",
+            Ace => "Ace",
         }
-        rank_str
     }
 
     /// Gets the standard card ranks

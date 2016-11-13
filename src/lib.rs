@@ -8,7 +8,10 @@ extern crate rand;
 /// Creates the Ace of Spades
 ///
 /// ```
+/// # #[macro_use] extern crate deckofcards;
+/// # fn main() {
 /// let card = card!("AS");
+/// # }
 /// ```
 #[macro_export]
 macro_rules! card {
@@ -30,12 +33,15 @@ macro_rules! card {
 /// Creates a hand containing the Queen of Hearts and Two of Diamonds.
 ///
 /// ```
+/// # #[macro_use] extern crate deckofcards;
+/// # fn main() {
 /// let hand = hand!("QH", "2D");
+/// # }
 /// ```
 #[macro_export]
 macro_rules! hand {
     () => {
-        Hand::new()
+        $crate::Hand::new()
     };
     ( $( $s:expr ),* ) => {
         {
@@ -56,13 +62,19 @@ macro_rules! hand {
 /// Combine hand1 and hand2 into a new hand_combined.
 ///
 /// ```
-/// let hand_combined = combine_hands!(hand1, hand2);
+/// # #[macro_use] extern crate deckofcards;
+/// # fn main() {
+/// use deckofcards::Hand;
+/// let hand1 = hand!("AS", "KD");
+/// let hand2 = hand!("QH", "3C", "4S");
+/// let hand_combined = combine_hands!(&hand1, &hand2);
+/// # }
 /// ```
 #[macro_export]
 macro_rules! combine_hands {
     ( $( $h: expr),* ) => {
         {
-            let mut result = Hand::new();
+            let mut result = $crate::Hand::new();
             $(
                 result += $h;
             )*
@@ -75,7 +87,7 @@ macro_rules! combine_hands {
 #[macro_export]
 macro_rules! deck {
     () => {
-        Deck::new()
+        $crate::Deck::new()
     }
 }
 

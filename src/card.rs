@@ -12,6 +12,7 @@ use super::*;
 /// # Example
 ///
 /// ```
+/// use deckofcards::{Card, Rank, Suit};
 /// let card = Card::new(Rank::Jack, Suit::Hearts);
 /// ```
 #[derive(Copy, Clone, Hash, PartialEq, Eq, PartialOrd, Debug)]

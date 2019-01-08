@@ -1,5 +1,5 @@
-use std::vec::Vec;
 use std::result::Result;
+use std::vec::Vec;
 
 use super::*;
 
@@ -13,6 +13,8 @@ use super::*;
 /// A deck can contain more than one card with the same rank / suit combination.
 ///
 /// A deck cannot have more cards added or removed to it once it is created.
+///
+#[derive(Clone)]
 pub struct Deck {
     /// A deck contains zero or more cards
     cards: Vec<Card>,
@@ -29,15 +31,6 @@ impl Cards for Deck {
     fn mut_cards(&mut self) -> &mut [Card] {
         self.cards.as_mut_slice()
     }
-}
-
-impl Clone for Deck {
-	fn clone(&self) -> Deck {
-		Deck {
-			cards: self.cards.clone(),
-			dealt_cards: self.dealt_cards.clone()
-		}
-	}
 }
 
 impl Deck {
@@ -74,21 +67,42 @@ impl Deck {
     pub fn count(&self) -> usize {
         self.undealt_count() + self.dealt_count()
     }
-    
+
     /// Returns the collection of dealt cards
     pub fn dealt_cards(&self) -> &[Card] {
-    	self.dealt_cards.as_slice()
+        self.dealt_cards.as_slice()
+    }
+
+    /// Tells you the top card (very next to be drawn) in the undealt deck
+    /// without dealing it.
+    pub fn top_card(&self) -> Option<Card> {
+        if let Some(card) = self.cards.last() {
+            Some(*card)
+        } else {
+            None
+        }
+    }
+
+    /// Tells you the bottom card (very last to be drawn) in the undealt deck
+    /// without dealing it.
+    pub fn bottom_card(&self) -> Option<Card> {
+        if let Some(card) = self.cards().first() {
+            Some(*card)
+        } else {
+            None
+        }
     }
 
     /// Deals the card from the undealt pile. If there are no cards left, the function
     /// will return an error.
     pub fn deal_one(&mut self) -> Result<Card, &'static str> {
         if self.cards.is_empty() {
-            return Err("No cards left");
+            Err("No cards left")
+        } else {
+            let card = self.cards.pop().unwrap();
+            self.dealt_cards.push(card);
+            Ok(card)
         }
-        let card = self.cards.pop().unwrap();
-        self.dealt_cards.push(card);
-        Ok(card)
     }
 
     /// Deals one or more card from the undealt pile and returns them as an array.

@@ -40,8 +40,8 @@ impl Card {
     /// Creates a card with the given suit and rank
     pub fn new(rank: Rank, suit: Suit) -> Card {
         Card {
-            rank: rank,
-            suit: suit,
+            rank,
+            suit,
         }
     }
 

@@ -6,11 +6,47 @@ use super::*;
 fn shuffle(cards: &mut [Card]) {
     let mut rng = thread_rng();
     // Knuth shuffle
-    let num_cards = cards.len();
-    for i in (1..num_cards - 1).rev() {
-        let j = rng.gen_range(0, i);
-        cards.swap(i, j);
+    let l = cards.len();
+    for n in 0..l {
+        let i = rng.gen_range(0, l - n);
+        cards.swap(i, l - n - 1);
     }
+}
+
+#[test]
+fn test_shuffle() {
+    // This code is going create a bunch of decks and shuffle them. It will test that the cards at ends of the deck appear to be shuffled.
+    let loop_count = 50;
+    let mut top_matches = 0;
+    let mut bottom_matches = 0;
+
+    for _ in 0..loop_count {
+        let mut d = Deck::new();
+        // Get cards before shuffling
+        let t1 = d.top_card().unwrap();
+        let b1 = d.bottom_card().unwrap();
+        // Shuffle
+        d.shuffle();
+        // Get end cards after shuffling
+        let t2 = d.top_card().unwrap();
+        let b2 = d.bottom_card().unwrap();
+        // Increment if top and bottom appear to be unshuffled
+        if t1 == t2 {
+            top_matches += 1;
+        }
+        if b1 == b2 {
+            bottom_matches += 1;
+        }
+    }
+
+    println!(
+        "top card matched {} times, bottom card matched {} times",
+        top_matches, bottom_matches
+    );
+
+    // We expect shuffling of both top and bottom at least some of the iterations of the loop
+    assert!(top_matches < loop_count);
+    assert!(bottom_matches < loop_count);
 }
 
 /// Sorts the slice by suit then rank (low to high)

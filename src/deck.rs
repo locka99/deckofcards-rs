@@ -3,14 +3,15 @@ use std::vec::Vec;
 
 use super::*;
 
-/// The `Deck` represents a deck of zero or more cards. Internally the
-/// deck consists of an undealt and a dealt pile of cards. The undealt pile starts off empty and
-/// receives cards as they are dealt from the undealt pile.
+/// The `Deck` represents a deck of zero or more cards. A default deck is 52 playing cards.
+/// Internally the deck consists of two stacks consisting of dealt and undealt cards. The dealt stack
+/// receives cards as they are dealt from the undealt stack.
 ///
-/// The deck may be reset to return it to its original state. A deck may be shuffled to randomize
-/// its order.
+/// The deck may be `reset()` to return it to its original state. A deck may be `shuffle()`'d to randomize
+/// its order. Shuffling uses a Knuth shuffle.
 ///
-/// A deck can contain more than one card with the same rank / suit combination.
+/// A deck can contain more than one card with the same rank / suit combination although by default
+/// it does not.
 ///
 /// A deck cannot have more cards added or removed to it once it is created.
 ///
@@ -41,16 +42,10 @@ impl Deck {
 
     /// Creates a new `Deck` containing the specified cards
     pub fn from_cards(cards: &[Card]) -> Deck {
-        let mut deck = Deck {
-            cards: Vec::with_capacity(cards.len()),
+        Deck {
+            cards: cards.to_vec(),
             dealt_cards: Vec::with_capacity(cards.len()),
-        };
-        deck.populate(cards);
-        deck
-    }
-
-    fn populate(&mut self, cards: &[Card]) {
-        self.cards.extend(cards);
+        }
     }
 
     /// Returns the number of remaining undealt cards in the `Deck`
@@ -76,32 +71,23 @@ impl Deck {
     /// Tells you the top card (very next to be drawn) in the undealt deck
     /// without dealing it.
     pub fn top_card(&self) -> Option<Card> {
-        if let Some(card) = self.cards.last() {
-            Some(*card)
-        } else {
-            None
-        }
+        self.cards().last().map(|card| *card)
     }
 
     /// Tells you the bottom card (very last to be drawn) in the undealt deck
     /// without dealing it.
     pub fn bottom_card(&self) -> Option<Card> {
-        if let Some(card) = self.cards().first() {
-            Some(*card)
-        } else {
-            None
-        }
+        self.cards().first().map(|card| *card)
     }
 
     /// Deals the card from the undealt pile. If there are no cards left, the function
     /// will return an error.
     pub fn deal_one(&mut self) -> Result<Card, &'static str> {
-        if self.cards.is_empty() {
-            Err("No cards left")
-        } else {
-            let card = self.cards.pop().unwrap();
+        if let Some(card) = self.cards.pop() {
             self.dealt_cards.push(card);
             Ok(card)
+        } else {
+            Err("No cards left")
         }
     }
 
@@ -109,8 +95,7 @@ impl Deck {
     pub fn deal(&mut self, numcards: usize) -> Vec<Card> {
         let mut result: Vec<Card> = Vec::with_capacity(numcards as usize);
         for _ in 0..numcards {
-            let dealt: Result<Card, &'static str> = self.deal_one();
-            if let Ok(card) = dealt {
+            if let Ok(card) = self.deal_one() {
                 result.push(card);
             } else {
                 // No cards so no point continuing
@@ -124,8 +109,7 @@ impl Deck {
     pub fn deal_to_hand(&mut self, hand: &mut Hand, numcards: usize) -> usize {
         let mut dealt: usize = 0;
         for _ in 0..numcards {
-            let result: Result<Card, &'static str> = self.deal_one();
-            if let Ok(card) = result {
+            if let Ok(card) = self.deal_one() {
                 dealt += 1;
                 hand.push_card(card);
             } else {

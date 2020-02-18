@@ -7,29 +7,28 @@ use super::*;
 /// e.g. the cards a person is holding. A hand may be shuffled or sorted
 /// and there are functions for adding or removing cards. Unlike a `Deck`,
 /// there is no concept of dealt or undealt cards.
+#[derive(Clone)]
 pub struct Hand {
     pub cards: Vec<Card>,
 }
 
 impl Display for Hand {
     fn fmt(&self, f: &mut Formatter) -> Result {
-        let mut result = String::new();
-        for (i, card) in self.cards.iter().enumerate() {
+        let mut result = String::with_capacity(self.cards.len() * 3);
+        self.cards.iter().enumerate().for_each(|(i, card)| {
             result.push_str(&card.to_str());
             if i < self.cards.len() - 1 {
                 result.push(',');
             }
-        }
+        });
         write!(f, "{}", result)
     }
 }
 
-impl Clone for Hand {
-	fn clone(&self) -> Hand {
-		return Hand {
-			cards: self.cards.clone()
-		}
-	}
+impl Default for Hand {
+    fn default() -> Self {
+        Self { cards: Vec::new() }
+    }
 }
 
 impl<'a> AddAssign<&'a Hand> for Hand {
@@ -55,10 +54,8 @@ impl Cards for Hand {
 }
 
 impl Hand {
-    /// Make a new empty `Hand`
-    pub fn new() -> Hand {
-        Hand { cards: Vec::new() }
-    }
+    /// Create an empty hand
+    pub fn new() -> Self { Self::default() }
 
     /// Makes a `Hand` from an existing hand
     pub fn from_hand(hand: &Hand) -> Hand {
@@ -72,12 +69,8 @@ impl Hand {
 
     /// Constructs a `Hand` from a slice of strings with abbreviated card rank / suit values
     pub fn from_strings(card_slice: &[&str]) -> Hand {
-        let mut cards: Vec<Card> = Vec::with_capacity(card_slice.len());
-        for s in card_slice {
-            let card = card!(s);
-            cards.push(card);
-        }
-        Hand { cards: cards }
+        let cards = card_slice.iter().map(|s| card!(s)).collect::<Vec<Card>>();
+        Hand { cards }
     }
 
     /// Adds one `Card` to the `Hand`
@@ -99,12 +92,12 @@ impl Hand {
     pub fn len(&self) -> usize {
         self.cards.len()
     }
-    
+
     /// Clears the `Hand` (makes it empty)
     pub fn clear(&mut self) {
     	self.cards.clear();
     }
-    
+
     /// Removes a `Card` from the `Hand` and returns it, panics if index does not exist
     pub fn remove(&mut self, index: usize) -> Card {
         self.cards.remove(index)
@@ -113,15 +106,24 @@ impl Hand {
     /// Removes the first instance of every matching card from the `Hand`
     pub fn remove_cards(&mut self, cards: &[Card]) {
         for c in cards {
-            self.remove_card(*c);
+            let _ = self.remove_card(c);
+        }
+    }
+
+    /// Removes the every instance of every matching card from the `Hand`
+    pub fn remove_all_cards(&mut self, cards: &[Card]) {
+        for c in cards {
+            while self.remove_card(c) {}
         }
     }
 
     /// Removes first instance of the matching card from the `Hand`
-    pub fn remove_card(&mut self, card: Card) {
-        let found = self.cards.iter().position(|c| *c == card);
-        if found.is_some() {
-            self.cards.remove(found.unwrap());
+    pub fn remove_card(&mut self, card: &Card) -> bool {
+        if let Some(pos) = self.cards.iter().position(|c| c == card) {
+            let _ = self.cards.remove(pos);
+            true
+        } else {
+            false
         }
     }
 

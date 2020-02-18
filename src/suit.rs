@@ -43,20 +43,23 @@ impl Suit {
 
     /// Returns a Suit for the character, e.g. Hearts for 'H'
     pub fn from_char(ch: char) -> Result<Suit, &'static str> {
-        let s = Suit::chars().to_string();
-        for (i, c) in s.chars().enumerate() {
-            if c == ch {
-                return Ok(Suit::suits()[i]);
-            }
+        match ch {
+            'S' => Ok(Spades),
+            'H' => Ok(Hearts),
+            'D' => Ok(Diamonds),
+            'C' => Ok(Clubs),
+            _ => Err("Invalid suit")
         }
-        Err("Invalid suit")
     }
 
     /// Returns a char that the represents the suit, e.g. 'H' for Hearts
     pub fn to_char(&self) -> char {
-        let ord = self.ordinal();
-        let b: &[u8] = Suit::chars().as_bytes();
-        b[ord] as char
+        match self {
+            Spades => 'S',
+            Hearts => 'H',
+            Diamonds => 'D',
+            Clubs => 'C',
+        }
     }
 
     /// Returns a string name of the suit
@@ -73,10 +76,5 @@ impl Suit {
     pub fn suits() -> &'static [Suit] {
         static SUITS: [Suit; 4] = [Spades, Hearts, Diamonds, Clubs];
         &SUITS[..]
-    }
-
-    /// A string with chars for each suit
-    fn chars() -> &'static str {
-        "SHDC"
     }
 }

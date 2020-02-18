@@ -81,21 +81,42 @@ impl Rank {
 
     /// Returns a Rank represented by a char
     pub fn from_char(ch: char) -> Result<Rank, &'static str> {
-        let s = Rank::chars().to_string();
-        for (i, c) in s.chars().enumerate() {
-            // Special case for '1'->'A'
-            if c == ch || (ch == '1' && c == 'A') {
-                return Ok(Rank::ranks()[i]);
-            }
-        }
-        Err("Invalid rank")
+        let rank = match ch {
+            '2' => Two,
+            '3' => Three,
+            '4' => Four,
+            '5' => Five,
+            '6' => Six,
+            '7' => Seven,
+            '8' => Eight,
+            '9' => Nine,
+            'T' => Ten,
+            'J' => Jack,
+            'Q' => Queen,
+            'K' => King,
+            'A' | '1' => Ace,
+            _ => return Err("Invalid rank")
+        };
+        Ok(rank)
     }
 
     /// Turns a Rank into a char
     pub fn to_char(&self) -> char {
-        let ord = self.ordinal();
-        let b: &[u8] = Rank::chars().as_bytes();
-        b[ord] as char
+        match *self {
+            Two => '2',
+            Three => '3',
+            Four => '4',
+            Five => '5',
+            Six => '6',
+            Seven => '7',
+            Eight => '8',
+            Nine => '9',
+            Ten => 'T',
+            Jack => 'J',
+            Queen => 'Q',
+            King => 'K',
+            Ace => 'A',
+        }
     }
 
     /// Turns a Rank into a string
@@ -119,13 +140,9 @@ impl Rank {
 
     /// Gets the standard card ranks
     pub fn ranks() -> &'static [Rank] {
-        static RANKS: [Rank; 13] = [Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack,
-                                    Queen, King, Ace];
+        static RANKS: [Rank; 13] = [
+            Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace
+        ];
         &RANKS[..]
-    }
-
-    /// A string containing chars for each standard Rank
-    fn chars() -> &'static str {
-        "23456789TJQKA"
     }
 }

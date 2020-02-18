@@ -1,7 +1,7 @@
 extern crate rand;
 
-use std::fmt;
 use std::cmp::Ordering;
+use std::fmt;
 use std::slice::Iter;
 
 use super::*;
@@ -111,18 +111,12 @@ impl Card {
 
     /// Turns the card into a short string consisting of rank, suit, e.g. "AS"
     pub fn to_str(&self) -> String {
-        let mut result = String::with_capacity(2);
-        result.push(self.rank.to_char());
-        result.push(self.suit.to_char());
-        result
+        format!("{}{}", self.rank.to_char(), self.suit.to_char())
     }
 
     /// Returns an English formatted name of the card, e.g. "Ace of Spades"
     pub fn name(&self) -> String {
-        let mut name: String = self.rank.to_str().to_string();
-        name = name + " of ";
-        name = name + self.suit.to_str();
-        name
+        format!("{} of {}", self.rank.to_str(), self.suit.to_str())
     }
 
     /// Returns an ordinal for the card which is a unique number which can be used for indexing
@@ -151,8 +145,8 @@ impl Card {
     }
 
     /// Returns an array slice containing all the cards in a standard 52-card deck
-    pub fn all_cards() -> &'static[Card] {
-        static CARDS : [Card; 52] = [
+    pub fn all_cards() -> &'static [Card] {
+        static CARDS: [Card; 52] = [
             Card { suit: Suit::Spades, rank: Rank::Two },
             Card { suit: Suit::Spades, rank: Rank::Three },
             Card { suit: Suit::Spades, rank: Rank::Four },
@@ -166,7 +160,6 @@ impl Card {
             Card { suit: Suit::Spades, rank: Rank::Queen },
             Card { suit: Suit::Spades, rank: Rank::King },
             Card { suit: Suit::Spades, rank: Rank::Ace },
-
             Card { suit: Suit::Hearts, rank: Rank::Two },
             Card { suit: Suit::Hearts, rank: Rank::Three },
             Card { suit: Suit::Hearts, rank: Rank::Four },
@@ -180,7 +173,6 @@ impl Card {
             Card { suit: Suit::Hearts, rank: Rank::Queen },
             Card { suit: Suit::Hearts, rank: Rank::King },
             Card { suit: Suit::Hearts, rank: Rank::Ace },
-
             Card { suit: Suit::Diamonds, rank: Rank::Two },
             Card { suit: Suit::Diamonds, rank: Rank::Three },
             Card { suit: Suit::Diamonds, rank: Rank::Four },
@@ -194,7 +186,6 @@ impl Card {
             Card { suit: Suit::Diamonds, rank: Rank::Queen },
             Card { suit: Suit::Diamonds, rank: Rank::King },
             Card { suit: Suit::Diamonds, rank: Rank::Ace },
-
             Card { suit: Suit::Clubs, rank: Rank::Two },
             Card { suit: Suit::Clubs, rank: Rank::Three },
             Card { suit: Suit::Clubs, rank: Rank::Four },

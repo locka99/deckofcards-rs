@@ -1,5 +1,3 @@
-extern crate rand;
-
 /// Creates a `Card` and sets its rank / suit from its abbreviated string description. The description
 /// is of the form "RS", Rank followed by Suit, e.g. "2D" for Two of Diamonds.
 ///
@@ -18,10 +16,9 @@ macro_rules! card {
     ($s:expr) => {
         {
             let cr = $crate::Card::from_str($s);
-            if cr.is_err() {
+            cr.unwrap_or_else(|_| {
                 panic!("Not a known card {}", $s);
-            }
-            cr.unwrap()
+            })
         }
     };
 }

@@ -1,7 +1,4 @@
-#[macro_use]
-extern crate deckofcards;
-
-use deckofcards::{Deck, Cards};
+use deckofcards::{Cards, Deck};
 
 fn main() {
     let mut deck = Deck::new();
@@ -11,11 +8,9 @@ fn main() {
 
     // Deal a card
     for _ in 0..10 {
-        let next = deck.deal_one();
-        if let Ok(card) = next {
+        if let Ok(card) = deck.deal_one() {
             println!("You dealt a {}", card.name());
-        }
-        else {
+        } else {
             panic!("We should have enough cards for this not to happen")
         }
     }

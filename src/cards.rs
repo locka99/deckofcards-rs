@@ -2,17 +2,6 @@ use rand::*;
 
 use super::*;
 
-/// Shuffles the slice of cards
-fn shuffle(cards: &mut [Card]) {
-    let mut rng = thread_rng();
-    // Knuth shuffle
-    let l = cards.len();
-    for n in 0..l {
-        let i = rng.gen_range(0, l - n);
-        cards.swap(i, l - n - 1);
-    }
-}
-
 #[test]
 fn test_shuffle() {
     // This code is going create a bunch of decks and shuffle them. It will test that the cards at ends of the deck appear to be shuffled.
@@ -76,9 +65,23 @@ pub fn cards_of_suit(cards: &[Card], suit: Suit) -> Vec<Card> {
     cards.iter().filter(|c| c.suit == suit).cloned().collect()
 }
 
+/// Shuffles the slice of cards
+pub fn shuffle(cards: &mut [Card]) {
+    let mut rng = thread_rng();
+    // Knuth shuffle
+    let l = cards.len();
+    for n in 0..l {
+        let i = rng.gen_range(0, l - n);
+        cards.swap(i, l - n - 1);
+    }
+}
+
 /// Certain actions are common to a deck and a hand of cards
 pub trait Cards {
+    /// Return the cards as a slice
     fn cards(&self) -> &[Card];
+
+    /// Return the cards as a mutable slice
     fn mut_cards(&mut self) -> &mut [Card];
 
     /// Shuffle the cards into a random order

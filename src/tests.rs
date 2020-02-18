@@ -295,11 +295,11 @@ fn deck_shuffle_new_order() {
 
 #[test]
 fn deck_clone() {
-	let mut d: Deck = deck!();
-	d.deal(3);
-	let d2 = d.clone();
-	assert_eq!(d.cards().len(), d2.cards().len());
-	assert_eq!(d.dealt_cards().len(), d2.dealt_cards().len());
+    let mut d: Deck = deck!();
+    d.deal(3);
+    let d2 = d.clone();
+    assert_eq!(d.cards().len(), d2.cards().len());
+    assert_eq!(d.dealt_cards().len(), d2.dealt_cards().len());
 }
 
 #[test]
@@ -340,6 +340,24 @@ fn hand_combine_hands() {
     assert_eq!(cards[6], card!("AS"));
 }
 
+#[test]
+fn remove_cards_from_hand() {
+    let mut h1 = hand!("QD", "KS", "3C");
+    assert!(h1.remove_card(&card!("KS")));
+    assert!(!h1.remove_card(&card!("KS")));
+    assert_eq!(h1.len(), 2);
+
+    let mut h1 = hand!("QD", "KS", "3C", "KS");
+    h1.remove_cards(&[card!("KS")]);
+    assert_eq!(h1.len(), 3);
+    assert!(h1.remove_card(&card!("KS")));
+    assert!(!h1.remove_card(&card!("KS")));
+
+    let mut h1 = hand!("QD", "KS", "3C", "KS");
+    h1.remove_all_cards(&[card!("KS")]);
+    assert_eq!(h1.len(), 2);
+}
+
 // TODO hand_sort_suit_ascending_rank
 // TODO hand_sort_suit_descending_rank
 
@@ -378,16 +396,9 @@ fn hand_sort_shuffle_deck() {
     assert_eq!(all_cards.len(), hand_cards.len());
 
     println!("Debug - the actual sort order");
-    {
-        let mut i = hand_cards.iter();
-        loop {
-            let n = i.next();
-            if n.is_none() {
-                break;
-            }
-            println!("card x = {}", n.unwrap().name());
-        }
-    }
+    hand_cards.iter().for_each(|c| {
+        println!("card x = {}", c.name());
+    });
 
     println!("Check order is sorted");
     // Iterate

@@ -1,7 +1,0 @@
-[package]
-name = "deckofcards-rs-sample"
-version = "0.1.0"
-authors = ["Adam Lock <locka99@gmail.com>"]
-
-[dependencies.deckofcards]
-path = ".."

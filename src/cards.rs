@@ -1,4 +1,5 @@
-use rand::*;
+use rand::prelude::*;
+use rand_pcg::Pcg32;
 
 use super::*;
 
@@ -65,13 +66,11 @@ pub fn cards_of_suit(cards: &[Card], suit: Suit) -> Vec<Card> {
     cards.iter().filter(|c| c.suit == suit).cloned().collect()
 }
 
-/// Shuffles the slice of cards
-pub fn shuffle(cards: &mut [Card]) {
-    let mut rng = thread_rng();
-    // Knuth shuffle
+/// Perform a Knuth shuffle on a deck of cards using the given RNG
+pub fn knuth_shuffle<T: Rng>(cards: &mut [Card], rng: &mut T) {
     let l = cards.len();
     for n in 0..l {
-        let i = rng.gen_range(0, l - n);
+        let i = rng.gen_range(0..l - n);
         cards.swap(i, l - n - 1);
     }
 }
@@ -84,9 +83,19 @@ pub trait Cards {
     /// Return the cards as a mutable slice
     fn mut_cards(&mut self) -> &mut [Card];
 
+    /// Perform a Knuth shuffle with the given RNG
+    fn knuth_shuffle<T: Rng>(&mut self, rng: &mut T) {
+        knuth_shuffle(self.mut_cards(), rng);
+    }
+
     /// Shuffle the cards into a random order
     fn shuffle(&mut self) {
-        shuffle(self.mut_cards());
+        self.knuth_shuffle(&mut thread_rng());
+    }
+
+    /// Shuffle the cards into a random but predictable order
+    fn seeded_shuffle(&mut self, seed: u64) {
+        self.knuth_shuffle(&mut Pcg32::seed_from_u64(seed));
     }
 
     /// Sort the cards by suit and then by rank (low to high)

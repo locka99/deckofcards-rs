@@ -62,6 +62,27 @@ impl Suit {
         }
     }
 
+    /// Returns a Suit for the unicode character
+    pub fn from_unicode(ch: char) -> Result<Suit, &'static str> {
+        match ch {
+            '♠' => Ok(Spades),
+            '♥' => Ok(Hearts),
+            '♦' => Ok(Diamonds),
+            '♣' => Ok(Clubs),
+            _ => Err("Invalid suit")
+        }
+    }
+
+    /// Returns a char that represents the suit in unicode
+    pub fn to_unicode(&self) -> char {
+        match self {
+            Spades => '♠',
+            Hearts => '♥',
+            Diamonds => '♦',
+            Clubs => '♣',
+        }
+    }
+
     /// Returns a string name of the suit
     pub fn to_str(&self) -> &'static str {
         match *self {

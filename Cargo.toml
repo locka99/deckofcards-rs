@@ -1,11 +1,12 @@
 [package]
 name = "deckofcards"
-version = "0.4.0"
-authors = ["Adam Lock <locka99@gmail.com>"]
+version = "0.4.1"
+authors = ["Adam Lock <locka99@gmail.com>", "Jeff Tickle <jeff@jefftickle.com>"]
 description = "An API to implement a deck of cards"
 license = "LGPL-2.1"
 homepage = "https://github.com/locka99/deckofcards-rs"
-edition = "2018"
+edition = "2021"
 
 [dependencies]
-rand = "0.7"
+rand = "0.8.5"
+rand_pcg = "0.3.1"
